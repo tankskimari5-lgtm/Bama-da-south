@@ -3,7 +3,7 @@ import './build.mjs';
 let html=fs.readFileSync('dist/index.html','utf8');
 function patch(a,b,label){
  const i=html.indexOf(a);
- if(i<0||html.indexOf(a,i+1)!==-1)throw Error('Unsafe '+label+' patch (anchor absent or repeated)');
+ if(i<0||html.indexOf(a,i+1)!==-1)throw Error('Unsafe '+label+' patch (anchor index '+i+', second '+html.indexOf(a,i+1)+')');
  html=html.replace(a,b);
 }
 function patchRange(start,end,replacement,label){
