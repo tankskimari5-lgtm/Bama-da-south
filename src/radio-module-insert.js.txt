@@ -1,0 +1,100 @@
+
+// Bama Da South: speaker animation follows the actual audio output of the stereo.
+const __bamaMusic=()=>document.getElementById('bama-music');
+let __bamaAudioCtx=null,__bamaAnalyser=null,__bamaFreq=null,__bamaElementSource=null;
+let __bamaBeatTimer=null,__bamaUrl=null,__bamaEnvelope=0;
+function __bamaUnlock(){
+ if(!__bamaAudioCtx){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)throw new Error('Web Audio not supported');
+  __bamaAudioCtx=new AC();
+  __bamaAnalyser=__bamaAudioCtx.createAnalyser();
+  __bamaAnalyser.fftSize=2048;
+  __bamaAnalyser.smoothingTimeConstant=.53;
+  __bamaAnalyser.connect(__bamaAudioCtx.destination);
+  __bamaFreq=new Uint8Array(__bamaAnalyser.frequencyBinCount);
+  __bamaElementSource=__bamaAudioCtx.createMediaElementSource(__bamaMusic());
+  __bamaElementSource.connect(__bamaAnalyser);
+ }
+ if(__bamaAudioCtx.state==='suspended')__bamaAudioCtx.resume();
+}
+function __bamaKick(){
+ if(!__bamaAudioCtx||!__bamaAnalyser)return;
+ const t=__bamaAudioCtx.currentTime+.006;
+ const oscillator=__bamaAudioCtx.createOscillator(),gain=__bamaAudioCtx.createGain();
+ oscillator.type='sine';
+ oscillator.frequency.setValueAtTime(115,t);
+ oscillator.frequency.exponentialRampToValueAtTime(42,t+.15);
+ gain.gain.setValueAtTime(.0001,t);
+ gain.gain.exponentialRampToValueAtTime(.42,t+.012);
+ gain.gain.exponentialRampToValueAtTime(.0001,t+.25);
+ oscillator.connect(gain);gain.connect(__bamaAnalyser);
+ oscillator.start(t);oscillator.stop(t+.27);
+ oscillator.onended=()=>{try{gain.disconnect();oscillator.disconnect()}catch{}};
+}
+function __bamaStopDemo(){
+ if(__bamaBeatTimer!==null){clearInterval(__bamaBeatTimer);__bamaBeatTimer=null}
+ const button=document.getElementById('bama-demo');
+ if(button)button.textContent='DEMO BEAT';
+}
+function __bamaCycleChoice(){
+ const choices=['dual','quad','premium'];
+ let current='dual';
+ try{current=localStorage.getItem('bama.trunkAudioChoice')||'dual'}catch{}
+ const next=choices[(choices.indexOf(current)+1)%choices.length];
+ try{localStorage.setItem('bama.trunkAudioChoice',next)}catch{}
+ document.getElementById('bama-choice').textContent=next.toUpperCase();
+ document.getElementById('bama-status').textContent='Trunk kit: '+next+' — reload to install';
+}
+function __bamaBassStep(nowMs){
+ if(!world?.car?.userData?.bamaCones)return;
+ let energy=0;
+ if(__bamaAnalyser&&__bamaFreq&&__bamaAudioCtx?.state==='running'){
+  __bamaAnalyser.getByteFrequencyData(__bamaFreq);
+  const low=Math.max(1,Math.floor(32*__bamaAnalyser.fftSize/__bamaAudioCtx.sampleRate));
+  const high=Math.min(__bamaFreq.length-1,Math.ceil(150*__bamaAnalyser.fftSize/__bamaAudioCtx.sampleRate));
+  let sum=0;
+  for(let i=low;i<=high;i++){const q=__bamaFreq[i]/255;sum+=q*q}
+  energy=Math.min(1,Math.sqrt(sum/Math.max(1,high-low+1))*2.4);
+ }
+ const blend=energy>__bamaEnvelope?.38:.14;
+ __bamaEnvelope+=(energy-__bamaEnvelope)*blend;
+ const phase=nowMs*.058;
+ for(const item of world.car.userData.bamaCones){
+  item.mesh.position.z=item.base+Math.sin(phase)*(item.mid?.007:.036)*__bamaEnvelope;
+ }
+ const meter=document.getElementById('bama-level');
+ if(meter)meter.style.width=Math.round(__bamaEnvelope*100)+'%';
+}
+function __bamaInitRadio(){
+ const chooser=document.getElementById('bama-file');
+ const player=__bamaMusic();
+ document.getElementById('bama-load').addEventListener('click',()=>{
+  try{__bamaUnlock()}catch(e){document.getElementById('bama-status').textContent=e.message;return}
+  chooser.click();
+ });
+ chooser.addEventListener('change',async()=>{
+  const f=chooser.files?.[0];if(!f)return;
+  __bamaStopDemo();
+  if(__bamaUrl)URL.revokeObjectURL(__bamaUrl);
+  __bamaUrl=URL.createObjectURL(f);
+  player.src=__bamaUrl;
+  player.style.display='block';
+  document.getElementById('bama-status').textContent=f.name;
+  try{__bamaUnlock();await player.play()}catch{
+   document.getElementById('bama-status').textContent='Tap ▶ on the player to start';
+  }
+ });
+ player.addEventListener('play',()=>{__bamaStopDemo();try{__bamaUnlock()}catch{}});
+ document.getElementById('bama-choice').addEventListener('click',__bamaCycleChoice);
+ document.getElementById('bama-demo').addEventListener('click',()=>{
+  try{__bamaUnlock()}catch(e){document.getElementById('bama-status').textContent=e.message;return}
+  if(__bamaBeatTimer!==null){__bamaStopDemo();return}
+  player.pause();
+  __bamaKick();__bamaBeatTimer=setInterval(__bamaKick,430);
+  document.getElementById('bama-demo').textContent='STOP BEAT';
+  document.getElementById('bama-status').textContent='Demo kick active';
+ });
+ try{document.getElementById('bama-choice').textContent=(localStorage.getItem('bama.trunkAudioChoice')||'dual').toUpperCase()}catch{}
+}
+__bamaInitRadio();
