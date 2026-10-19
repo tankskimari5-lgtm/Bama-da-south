@@ -15,6 +15,7 @@ const car=fs.readFileSync('src/box-car-geometry.txt','utf8');
 const audio=fs.readFileSync('src/box-radio-controller.txt','utf8');
 const shop=fs.readFileSync('src/box-paid-shop.txt','utf8');
 const ui=fs.readFileSync('src/box-car-hud.html','utf8');
+const detailedLoader=fs.readFileSync('src/detailed-box-chevy-loader.txt','utf8');
 patchRange('const CAR_CATALOG=[','\n\nreturn {ROAD,LIMIT,DISTRICTS',
   "const CAR_CATALOG=[{name:'Bama Box Chevy',price:0,color:0x686a6b,description:'Classic 1980s four-door box Chevy • only available car'}];",
   'catalog');
@@ -46,7 +47,7 @@ patch("'brakeLevel','handlingLevel','carFinish'];",
       "'brakeLevel','handlingLevel','carFinish','audioKit'];",
       'save purchased audio with vehicle');
 patch('const S=load(),nav=new Navigator();',
-      "const S=load(),nav=new Navigator();S.carModel=0;S.cars=['Bama Box Chevy'];if(!['dual','quad','premium'].includes(S.audioKit))S.audioKit=null;",
+      "const S=load(),nav=new Navigator();S.carModel=0;S.cars=['Bama Box Chevy'];if(S.carPaint===0x262f35)S.carPaint=0x686a6b;if(!['dual','quad','premium'].includes(S.audioKit))S.audioKit=null;",
       'migrate existing saves');
 patchRange(' function dealership(){',' function setRims(',
       " function dealership(){modal('BAMA MOTORS','The Bama Box Chevy is currently the only vehicle in the game.',[{text:'Bama Box Chevy',note:'OWNED',disabled:true}], 'New cars will arrive in later updates.')}\n",
@@ -64,7 +65,7 @@ patch(" c.spoiler.visible=c.spec.type==='sport'||(S.engineLevel||0)>=2;\n world.
       " c.spoiler.visible=false;\n world.car.position.y=(S.carSuspension||0)*.11;bamaApplyAudioKit();",
       'apply installed audio to car model');
 patch('function frame(t){requestAnimationFrame(frame);const dt=',
-      audio+'\nfunction frame(t){requestAnimationFrame(frame);const dt=',
+      detailedLoader+'\n'+audio+'\nfunction frame(t){requestAnimationFrame(frame);const dt=',
       'hinge and bass controls');
 patch('if(!world)return;if(started&&!paused)',
       'if(!world)return;bamaAudioStep(t,dt);if(started&&!paused)',
@@ -73,5 +74,18 @@ patch('function enterCar(){driving=true;',
       'function enterCar(){if(world?.car?.userData){world.car.userData.hoodTarget=0;world.car.userData.trunkTarget=0}driving=true;',
       'close panels before driving');
 patch('</body>',ui+'\n</body>','mobile open hood/trunk buttons');
+
+// Keep Three's loader on exactly the same Three.js version as the main game.
+patch('<script type="module">',
+      '<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"}}</script>\n<script type="module">',
+      'importmap for GLTFLoader');
+patch('stylePlayer();styleCar();marker=new T.Mesh',
+      'stylePlayer();styleCar();bamaInstallDetailedCar();marker=new T.Mesh',
+      'replace starter car with actual detailed GLB');
+const carFile='public/cars/Bama_Box_Sedan_Stock_Mobile.glb';
+if(!fs.existsSync(carFile))throw Error('Detailed Bama GLB is missing; refusing to silently deploy placeholder');
+fs.mkdirSync('dist/cars',{recursive:true});
+fs.copyFileSync(carFile,'dist/cars/Bama_Box_Sedan_Stock_Mobile.glb');
+
 fs.writeFileSync('dist/index.html',html);
 console.log('Built Box Chevy only + paid trunk audio:',Buffer.byteLength(html),'bytes');
