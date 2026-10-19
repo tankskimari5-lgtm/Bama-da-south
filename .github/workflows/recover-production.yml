@@ -1,0 +1,40 @@
+name: Back up Bama Da South production
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/recover-production.yml'
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recover original game HTML from existing production site
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 15 --max-time 90 \
+            'https://bama-da-south.vercel.app/' -o /tmp/bama-production.html
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p=Path('/tmp/bama-production.html')
+          raw=p.read_bytes()
+          print('Recovered production HTML bytes:',len(raw))
+          print('SHA-256:',hashlib.sha256(raw).hexdigest())
+          if len(raw) < 80000 or b'BAMA DA SOUTH' not in raw or b'<script' not in raw:
+              raise SystemExit('Unexpected source; refusing backup.')
+          PY
+      - name: Save full source to isolated recovery branch
+        shell: bash
+        run: |
+          git checkout -B recovered-production
+          cp /tmp/bama-production.html index.html
+          printf '%s\n' 'Recovered from https://bama-da-south.vercel.app/' \
+            'This is the ORIGINAL deployed game source before speaker integration.' \
+            'The production Vercel deployment has not been modified.' > RECOVERY_NOTES.txt
+          git add index.html RECOVERY_NOTES.txt
+          git -c user.name='Bama Recovery Bot' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Back up V3.3 Bama Da South production game' || true
+          git push origin HEAD:recovered-production
