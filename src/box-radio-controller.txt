@@ -1,0 +1,109 @@
+
+// Bama Box Chevy: openable panels and gated car-audio response.
+let bamaBass=0,bamaAudioCtx=null,bamaAnalyser=null,bamaBins=null,bamaMusicSource=null,bamaDemoTimer=null,bamaUrl=null;
+function bamaNearCar(){
+ return world&&!driving&&!interior&&world.player.position.distanceTo(world.car.position)<6.9;
+}
+function bamaHingeSet(kind){
+ if(!bamaNearCar()){toast('Stand beside your Box Chevy to open it');return}
+ if(Math.abs(carSpeed)>.3)return;
+ const ud=world.car.userData;
+ if(kind==='hood'){ud.hoodTarget=ud.hoodTarget?0:1.08;toast(ud.hoodTarget?'Hood opening':'Hood closing')}
+ else{ud.trunkTarget=ud.trunkTarget?0:-1.19;toast(ud.trunkTarget?'Trunk opening':'Trunk closing')}
+}
+function bamaApplyAudioKit(){
+ if(!world?.car?.userData)return;
+ const ud=world.car.userData;
+ const kit=['dual','quad','premium'].includes(S.audioKit)?S.audioKit:null;
+ for(const [k,v]of Object.entries(ud.audioKits||{}))v.visible=(kit===k);
+ const radio=document.getElementById('bama-radio');
+ if(radio){
+  radio.style.display=kit?'block':'none';
+  document.getElementById('bama-kit-name').textContent=kit?kit.toUpperCase():'STOCK';
+ }
+ if(!kit){
+  bamaStopMusic();
+ }
+}
+function bamaAudioUnlock(){
+ if(!S.audioKit){toast('Buy a speaker kit at SOUTHLINE AUTO');return false}
+ try{
+  if(!bamaAudioCtx){
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(!AC)throw Error('Web Audio unavailable');
+   bamaAudioCtx=new AC();
+   bamaAnalyser=bamaAudioCtx.createAnalyser();
+   bamaAnalyser.fftSize=2048;bamaAnalyser.smoothingTimeConstant=.48;
+   bamaAnalyser.connect(bamaAudioCtx.destination);
+   bamaBins=new Uint8Array(bamaAnalyser.frequencyBinCount);
+   bamaMusicSource=bamaAudioCtx.createMediaElementSource(document.getElementById('bama-music'));
+   bamaMusicSource.connect(bamaAnalyser);
+  }
+  if(bamaAudioCtx.state==='suspended')bamaAudioCtx.resume();
+  return true;
+ }catch(err){toast(err.message||'Audio unavailable');return false}
+}
+function bamaStopDemo(){
+ if(bamaDemoTimer!==null){clearInterval(bamaDemoTimer);bamaDemoTimer=null}
+ const b=document.getElementById('bama-demo');if(b)b.textContent='DEMO BEAT';
+}
+function bamaStopMusic(){
+ bamaStopDemo();
+ const p=document.getElementById('bama-music');if(p)p.pause();
+ bamaBass=0;
+}
+function bamaKick(){
+ if(!bamaAudioCtx||!bamaAnalyser)return;
+ const t=bamaAudioCtx.currentTime+.006,osc=bamaAudioCtx.createOscillator(),gain=bamaAudioCtx.createGain();
+ osc.type='sine';
+ osc.frequency.setValueAtTime(115,t);osc.frequency.exponentialRampToValueAtTime(39,t+.17);
+ gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.33,t+.012);gain.gain.exponentialRampToValueAtTime(.0001,t+.24);
+ osc.connect(gain);gain.connect(bamaAnalyser);osc.start(t);osc.stop(t+.25);
+ osc.onended=()=>{try{osc.disconnect();gain.disconnect()}catch{}};
+}
+function bamaAudioStep(t,dt){
+ if(!world?.car?.userData)return;
+ const ud=world.car.userData;
+ if(ud.hoodHinge)ud.hoodHinge.rotation.x+=(ud.hoodTarget-ud.hoodHinge.rotation.x)*Math.min(1,dt*5.5);
+ if(ud.trunkHinge)ud.trunkHinge.rotation.x+=(ud.trunkTarget-ud.trunkHinge.rotation.x)*Math.min(1,dt*5.5);
+ if(ud.engineFan)ud.engineFan.rotation.z+=dt*(driving?18:4);
+ let raw=0;
+ if(S.audioKit&&bamaAnalyser&&bamaAudioCtx?.state==='running'){
+  bamaAnalyser.getByteFrequencyData(bamaBins);
+  const lo=Math.max(1,Math.floor(35*bamaAnalyser.fftSize/bamaAudioCtx.sampleRate));
+  const hi=Math.min(bamaBins.length-1,Math.ceil(135*bamaAnalyser.fftSize/bamaAudioCtx.sampleRate));
+  let sum=0;for(let k=lo;k<=hi;k++){const q=bamaBins[k]/255;sum+=q*q}
+  raw=Math.min(1,Math.sqrt(sum/Math.max(1,hi-lo+1))*2.4);
+ }
+ bamaBass+=(raw-bamaBass)*(raw>bamaBass?.48:.15);
+ for(const x of ud.audioCones||[])x.mesh.position.z=x.baseZ+(S.audioKit===x.kit?Math.sin(t*.061)*(x.mid?.008:.032)*bamaBass:0);
+ const hoodBtn=document.getElementById('bama-hood'),trunkBtn=document.getElementById('bama-trunk');
+ const near=bamaNearCar()&&started&&!paused;
+ if(hoodBtn)hoodBtn.style.display=near?'inline-flex':'none';
+ if(trunkBtn)trunkBtn.style.display=near?'inline-flex':'none';
+ if(trunkBtn)trunkBtn.textContent=ud.trunkTarget?'CLOSE TRUNK':'OPEN TRUNK';
+ if(hoodBtn)hoodBtn.textContent=ud.hoodTarget?'CLOSE HOOD':'OPEN HOOD';
+ const bar=document.getElementById('bama-bass-meter');
+ if(bar)bar.style.width=Math.round(bamaBass*100)+'%';
+}
+function bamaRadioInit(){
+ document.getElementById('bama-hood')?.addEventListener('click',()=>bamaHingeSet('hood'));
+ document.getElementById('bama-trunk')?.addEventListener('click',()=>bamaHingeSet('trunk'));
+ const chooser=document.getElementById('bama-file'),music=document.getElementById('bama-music');
+ document.getElementById('bama-load')?.addEventListener('click',()=>{if(bamaAudioUnlock())chooser.click()});
+ chooser?.addEventListener('change',async()=>{
+  const file=chooser.files?.[0];if(!file||!bamaAudioUnlock())return;
+  bamaStopDemo();
+  if(bamaUrl)URL.revokeObjectURL(bamaUrl);
+  bamaUrl=URL.createObjectURL(file);music.src=bamaUrl;music.style.display='block';
+  try{await music.play()}catch{toast('Tap play to start music')}
+ });
+ music?.addEventListener('play',()=>{bamaStopDemo();bamaAudioUnlock()});
+ document.getElementById('bama-demo')?.addEventListener('click',()=>{
+  if(!bamaAudioUnlock())return;
+  if(bamaDemoTimer!==null){bamaStopDemo();return}
+  music.pause();bamaKick();bamaDemoTimer=setInterval(bamaKick,440);
+  document.getElementById('bama-demo').textContent='STOP BEAT';
+ });
+}
+bamaRadioInit();
