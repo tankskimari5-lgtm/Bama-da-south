@@ -1,0 +1,63 @@
+
+// Load actual Blender-style GLB vehicle, rather than the original blocky procedural shell.
+// Trunk speaker installation remains separate and cash-gated by bamaApplyAudioKit().
+async function bamaInstallDetailedCar(){
+  const car=world?.car;
+  if(!car || car.userData.bamaDetailedReady)return;
+  document.body.dataset.bamaCarModel='loading';
+  try{
+    const {GLTFLoader}=await import('https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js');
+    const loader=new GLTFLoader();
+    const gltf=await loader.loadAsync('/cars/Bama_Box_Sedan_Stock_Mobile.glb');
+    if(!world?.car || world.car!==car)return;
+    const asset=gltf.scene;
+    asset.name='Detailed_Bama_Box_Chevy_GLB';
+    const hood=asset.getObjectByName('Hood_Hinge');
+    const trunk=asset.getObjectByName('Trunk_Hinge');
+    const fan=asset.getObjectByName('Engine_Radiator_Fan');
+    const wheels=['Wheel_FL','Wheel_FR','Wheel_RL','Wheel_RR'].map(name=>asset.getObjectByName(name));
+    if(!hood||!trunk||wheels.some(w=>!w))throw new Error('GLB missing animated body components');
+    const metadata=car.userData;
+    const kits=Object.values(metadata.audioKits||{});
+    // Keep existing purchasable rigs separate; hide and retire only the old low-detail car.
+    const oldCarVisuals=new T.Group();oldCarVisuals.name='Retired_Procedural_Car';
+    oldCarVisuals.visible=false;
+    for(const child of [...car.children]){
+      car.remove(child);
+      if(!kits.includes(child))oldCarVisuals.add(child);
+    }
+    const detailedShell=new T.Group();
+    detailedShell.name='Bama_Replacement_Real_3D_Car';
+    detailedShell.add(asset);
+    for(const rig of kits)detailedShell.add(rig);
+    car.add(oldCarVisuals,detailedShell);
+    metadata.bamaDetailedReady=true;
+    metadata.bamaModel=asset;
+    metadata.bamaStockVisuals=oldCarVisuals;
+    metadata.hoodHinge=hood;
+    metadata.trunkHinge=trunk;
+    metadata.engineFan=fan;
+    metadata.shell=detailedShell;
+    metadata.wheels=wheels;
+    metadata.frontPivots=wheels.slice(0,2);
+    metadata.bamaPaintMaterials=[];
+    asset.traverse(obj=>{
+      if(!obj.isMesh)return;
+      obj.castShadow=true;obj.receiveShadow=true;
+      if(obj.material?.name==='paint')metadata.bamaPaintMaterials.push(obj.material);
+    });
+    // The default car color is the reference car's metallic gray.
+    for(const material of metadata.bamaPaintMaterials){
+      material.color.setHex(S.carPaint??0x686a6b);
+      material.metalness=S.carFinish==='MATTE'?.06:.38;
+      material.roughness=S.carFinish==='MATTE'?.92:S.carFinish==='SATIN'?.56:.24;
+    }
+    bamaApplyAudioKit();
+    document.body.dataset.bamaCarModel='detailed-glb';
+    console.info('BAMA: detailed Box Chevy GLB loaded',wheels.length,'wheels');
+  }catch(err){
+    console.error('BAMA Box Chevy GLB failed:',err);
+    document.body.dataset.bamaCarModel='load-failed';
+    toast('Detailed car download failed — reload when connected');
+  }
+}
