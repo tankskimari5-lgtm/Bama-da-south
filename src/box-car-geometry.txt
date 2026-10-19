@@ -1,0 +1,82 @@
+
+// Authentic-inspired box-body vehicle with articulated hood and trunk lid.
+// Exterior shell is the only stock body, while audio systems remain hidden until installed.
+const hoodHinge=new T.Group();hoodHinge.name='Hood_Hinge';
+hoodHinge.position.set(0,bodyTop+.07,spec.cabStart+.20);
+const hoodLength=half+spec.cabStart+.20;
+makeBox(hoodHinge,width*.88,.048,hoodLength,0,.0,-hoodLength/2,paint);
+makeBox(hoodHinge,width*.80,.018,hoodLength-.13,0,-.036,-hoodLength/2,black);
+for(const sx of [-1,1]){
+ makeBox(hoodHinge,.023,.033,hoodLength-.11,sx*width*.36,-.02,-hoodLength/2,chrome);
+}
+shell.add(hoodHinge);
+const trunkHinge=new T.Group();trunkHinge.name='Trunk_Hinge';
+trunkHinge.position.set(0,bodyTop+.07,spec.cabEnd+.07);
+const trunkLength=half-spec.cabEnd-.07;
+makeBox(trunkHinge,width*.89,.048,trunkLength,0,0,trunkLength/2,paint);
+makeBox(trunkHinge,width*.80,.023,trunkLength-.09,0,-.032,trunkLength/2,black);
+for(const sx of [-1,1]){
+ makeBox(trunkHinge,.02,.025,trunkLength-.09,sx*width*.37,-.01,trunkLength/2,chrome);
+}
+shell.add(trunkHinge);
+// Engine bay under the movable hood
+const engineBay=new T.Group();engineBay.name='V8_Engine_Bay';shell.add(engineBay);
+const v8=mat(0x45484b,.48,.42), engineChrome=mat(0x9a9c9d,.27,.67), hose=mat(0x151719,.84),redWire=mat(0xb22a29,.54),gold=mat(0xb4a26b,.44,.5);
+const engineZ=(spec.cabStart-half)/2+.08;
+makeBox(engineBay,width*.78,.12,Math.max(.65,half+spec.cabStart-.2),0,bodyTop-.25,engineZ,hose);
+makeBox(engineBay,.74,.39,.96,0,bodyTop-.34,engineZ,v8);
+for(const sx of [-1,1]){
+ makeBox(engineBay,.245,.14,.82,sx*.37,bodyTop-.11,engineZ,engineChrome);
+ for(let j=0;j<4;j++){
+  makeBox(engineBay,.025,.028,.025,sx*.38,bodyTop-.03,engineZ-.30+j*.2,redWire);
+ }
+}
+const cleaner=new T.Mesh(new T.CylinderGeometry(.35,.35,.12,36),engineChrome);
+cleaner.position.set(0,bodyTop-.075,engineZ);engineBay.add(cleaner);
+const airRing=new T.Mesh(new T.TorusGeometry(.29,.022,8,32),hose);
+airRing.rotation.x=Math.PI/2;airRing.position.set(0,bodyTop-.005,engineZ);engineBay.add(airRing);
+makeBox(engineBay,width*.64,.31,.11,0,bodyTop-.29,-half+.21,hose);
+makeBox(engineBay,.25,.28,.26,-width*.33,bodyTop-.26,spec.cabStart-.17,hose);
+makeBox(engineBay,.23,.16,.20,width*.35,bodyTop-.24,spec.cabStart-.16,gold);
+const engineFan=new T.Group();engineFan.name='Engine_Radiator_Fan';
+engineFan.position.set(0,bodyTop-.29,-half+.24);
+for(let i=0;i<6;i++){let a=i*Math.PI/3;let blade=makeBox(engineFan,.09,.018,.15,Math.cos(a)*.16,Math.sin(a)*.16,0,hose);blade.rotation.z=a}
+engineBay.add(engineFan);
+// Physical stock trunk cavity. NO audio equipment is visible until a paid installation.
+const cargo=new T.Group();cargo.name='Stock_Trunk_Cavity';shell.add(cargo);
+const lining=mat(0x303135,.93),sideLining=mat(0x27282a,.95);
+const zCargo=(spec.cabEnd+half)/2;
+makeBox(cargo,width*.77,.055,Math.max(.5,half-spec.cabEnd-.05),0,bodyBottom+.16,zCargo,lining);
+makeBox(cargo,width*.77,.43,.075,0,bodyBottom+.38,spec.cabEnd+.065,lining);
+for(const sx of [-1,1])makeBox(cargo,.05,.47,trunkLength-.07,sx*width*.40,bodyBottom+.38,zCargo,sideLining);
+makeBox(cargo,width*.78,.085,.09,0,bodyBottom+.31,half-.08,sideLining);
+// Three paid options are modelled as separate, hidden installations.
+const audioKits={};const audioCones=[];
+const blackCab=mat(0x202124,.95),subMetal=mat(0x343940,.35,.55),subRubber=mat(0x07090b,.97),coneMat=mat(0x20262a,.58,.3),accent=mat(0xb72b34,.5,.4);
+function createAudioKit(key,positions,subRadius,extra=false){
+ const rack=new T.Group();rack.name='Audio_Installation_'+key;
+ rack.position.set(0,bodyBottom+.19,half-.51);
+ const h=key==='quad'?.56:.47,w=key==='premium'?width*.68:width*.62;
+ makeBox(rack,w,h,.45,0,h*.5,0,blackCab);
+ makeBox(rack,w-.04,h-.045,.022,0,h*.5,.236,subMetal);
+ for(const [xx,yy,r] of positions){
+  const hub=new T.Group();hub.position.set(xx,yy,.265);rack.add(hub);
+  const ring=new T.Mesh(new T.TorusGeometry(r,.020,8,36),subMetal);hub.add(ring);
+  const rubberRing=new T.Mesh(new T.TorusGeometry(r*.84,.033,10,36),subRubber);rubberRing.position.z=.007;hub.add(rubberRing);
+  const moving=new T.Group();moving.name='Bass_Diaphragm_'+key;hub.add(moving);
+  const face=new T.Mesh(new T.CylinderGeometry(r*.78,r*.41,.061,40),coneMat);face.rotation.x=Math.PI/2;face.position.z=-.018;moving.add(face);
+  const cap=new T.Mesh(new T.SphereGeometry(r*.35,20,12),coneMat);cap.scale.set(1,1,.24);cap.position.z=.026;moving.add(cap);
+  const trim=new T.Mesh(new T.TorusGeometry(r*.55,.005,6,32),accent);trim.position.z=.035;moving.add(trim);
+  audioCones.push({mesh:moving,kit:key,baseZ:moving.position.z,mid:r<.10});
+ }
+ if(extra){
+  for(const sx of [-1,1]){
+   const amp=makeBox(rack,.10,.23,.29,sx*(w/2+.075),h*.48,0,subMetal);
+   amp.name='Audio_Amplifier_'+key;
+  }
+ }
+ rack.visible=false;root.add(rack);audioKits[key]=rack;
+}
+createAudioKit('dual',[[-.30,.237,.205],[.30,.237,.205]],.205);
+createAudioKit('quad',[[-.33,.15,.13],[.33,.15,.13],[-.33,.41,.13],[.33,.41,.13]],.13);
+createAudioKit('premium',[[-.29,.225,.19],[.29,.225,.19],[-.57,.345,.077],[.57,.345,.077]],.19,true);
