@@ -1,0 +1,25 @@
+function bamaAudioShop(){
+ const kits=[
+  {id:'dual',name:'Dual 12-inch Subwoofers',price:950,desc:'2 subs + carpet enclosure and installation'},
+  {id:'quad',name:'Quad Competition System',price:2750,desc:'4 subs + amplified enclosure and installation'},
+  {id:'premium',name:'Premium Trunk Build',price:5200,desc:'Large subs + mids + amplifiers and custom installation'}
+ ];
+ modal('SOUTHLINE AUTO • TRUNK AUDIO INSTALL',
+  'Your Box Chevy trunk starts STOCK. Cash $'+Math.floor(S.cash)+'. Installation is included.',
+  [
+   ...kits.map(k=>({
+    text:k.name+' • '+k.desc,
+    note:S.audioKit===k.id?'INSTALLED':'$'+k.price,
+    disabled:S.audioKit===k.id,
+    run:()=>{
+     if(S.audioKit===k.id)return;
+     if(!spend(k.price))return;
+     S.audioKit=k.id;
+     save(S);styleCar();close();
+     toast(k.name+' purchased and installed! Open your trunk.');
+    }
+   })),
+   {text:'Keep my current setup',note:'BACK',run:garage}
+  ],
+  'A new kit replaces the previous installation. Purchases stay in local saves.');
+}
