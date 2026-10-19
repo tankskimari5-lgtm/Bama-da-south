@@ -1,0 +1,47 @@
+name: Build 3D Box Chevy car asset
+on:
+  push:
+    branches: [audio-dev]
+    paths:
+      - 'tools/generate_stock_car.py'
+      - 'tools/optimize_stock_car.py'
+      - '.github/workflows/build-box-chevy-asset.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-car:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install geometry generator
+        run: pip install 'numpy>=1.25,<3' 'trimesh>=4.4,<5' 'pillow>=10,<13'
+      - name: Generate the actual Box Chevy GLB and optimized version
+        run: |
+          BAMA_ASSET_OUT=public/cars python tools/generate_stock_car.py
+          python tools/optimize_stock_car.py
+      - name: Validate both models
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import trimesh
+          for filename in ['Bama_Box_Sedan_Stock.glb','Bama_Box_Sedan_Stock_Mobile.glb']:
+              p=Path('public/cars')/filename
+              model=trimesh.load(p,force='scene')
+              assert p.stat().st_size>100000
+              assert 'Hood_Hinge' in model.graph.nodes
+              assert 'Trunk_Hinge' in model.graph.nodes
+              print('VALID',filename,len(model.geometry),p.stat().st_size)
+          PY
+      - name: Commit the generated asset to development branch
+        run: |
+          git config user.name 'Bama Vehicle Assets Bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/cars/*.glb public/cars/model_info.json
+          git diff --cached --quiet || git commit -m 'Generate optimized real Box Chevy GLB vehicle'
+          git push origin HEAD:audio-dev
