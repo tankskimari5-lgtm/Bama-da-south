@@ -1,0 +1,20 @@
+{
+  "name": "Bama Da South \u2014 1980s Box-Style Sedan",
+  "vehicle_length_m": 5.3,
+  "vehicle_width_m": 1.95,
+  "vehicle_height_m": 1.69,
+  "axis": "Y up / -Z forward",
+  "hood_node": "Hood_Hinge",
+  "hood_open_angle_radians": 1.05,
+  "trunk_node": "Trunk_Hinge",
+  "trunk_open_angle_radians": -1.22,
+  "bass_diaphragms": [],
+  "wheel_nodes": [
+    "Wheel_FL",
+    "Wheel_FR",
+    "Wheel_RL",
+    "Wheel_RR"
+  ],
+  "speaker_system": "Stock cargo trunk; speaker installs purchasable in game",
+  "parts": "Independently articulated hood/trunk; full engine bay, cabin interior, struts, empty trunk, grille/chrome and wire wheels"
+}
