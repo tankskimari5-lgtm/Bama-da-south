@@ -1,0 +1,43 @@
+
+// BAMA trunk speaker meshes live inside the car scene graph.
+const bamaCones=[];
+const bamaTrunk=new T.Group();
+bamaTrunk.name='BAMA_TRUNK_SPEAKERS';
+const bamaPaint=new T.MeshStandardMaterial({color:0x222326,roughness:.96,metalness:.01});
+const bamaFrame=new T.MeshStandardMaterial({color:0x343840,roughness:.35,metalness:.62});
+const bamaCarbon=new T.MeshStandardMaterial({color:0x272b31,roughness:.55,metalness:.22});
+const bamaRubber=new T.MeshStandardMaterial({color:0x090a0d,roughness:.92});
+const bamaAccent=new T.MeshStandardMaterial({color:0xba1828,roughness:.45,metalness:.42});
+let bamaChoice='dual';
+try{bamaChoice=localStorage.getItem('bama.trunkAudioChoice')||'dual'}catch{}
+if(!['dual','quad','premium'].includes(bamaChoice))bamaChoice='dual';
+const bamaHeight=bamaChoice==='quad'?.71:.55;
+const bamaWidth=bamaChoice==='premium'?1.46:1.32;
+makeBox(bamaTrunk,bamaWidth,bamaHeight,.46,0,0,0,bamaPaint);
+makeBox(bamaTrunk,bamaWidth-.06,bamaHeight-.065,.018,0,0,.24,bamaFrame);
+const bamaDriver=(x,y,r,mid=false)=>{
+ const mount=new T.Group();mount.position.set(x,y,.259);bamaTrunk.add(mount);
+ const ring=new T.Mesh(new T.TorusGeometry(r,.020,10,48),bamaFrame);mount.add(ring);
+ const surround=new T.Mesh(new T.TorusGeometry(r*.82,.032,12,48),bamaRubber);
+ surround.position.z=.008;mount.add(surround);
+ const movable=new T.Group();movable.name=(mid?'Midrange':'Subwoofer')+'_Moving_Assembly';mount.add(movable);
+ const cone=new T.Mesh(new T.CylinderGeometry(r*.77,r*.42,.065,48),bamaCarbon);
+ cone.rotation.x=Math.PI/2;cone.position.z=-.017;movable.add(cone);
+ const cap=new T.Mesh(new T.SphereGeometry(r*.36,24,12),bamaCarbon);
+ cap.scale.set(1,1,.26);cap.position.z=.023;movable.add(cap);
+ const stripe=new T.Mesh(new T.TorusGeometry(r*.52,.005,6,48),bamaAccent);
+ stripe.position.z=.033;movable.add(stripe);
+ bamaCones.push({mesh:movable,base:movable.position.z,mid});
+};
+if(bamaChoice==='quad'){
+ for(const y of [-.171,.171])for(const x of [-.345,.345])bamaDriver(x,y,.144);
+}else{
+ bamaDriver(-.318,-.03,.213);bamaDriver(.318,-.03,.213);
+ if(bamaChoice==='premium'){
+  bamaDriver(-.59,.17,.075,true);bamaDriver(.59,.17,.075,true);
+ }
+}
+// Local car rear faces +Z, above trunk lip for clear camera visibility.
+bamaTrunk.position.set(0,bodyTop+.23,half-.27);
+bamaTrunk.visible=detailed;
+root.add(bamaTrunk);
