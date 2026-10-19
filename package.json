@@ -1,0 +1,12 @@
+{
+  "name": "bama-da-south",
+  "version": "3.3.0",
+  "private": true,
+  "description": "Bama Da South 3D mobile web game",
+  "scripts": {
+    "build": "node build.mjs",
+    "unpack": "node build.mjs --unpack",
+    "preview": "npx serve dist"
+  },
+  "engines": {"node": ">=20"}
+}
