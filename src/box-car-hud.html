@@ -1,0 +1,15 @@
+
+<div id="bama-box-interactions" style="position:fixed;z-index:1050;bottom:calc(93px + env(safe-area-inset-bottom,0px));right:calc(14px + env(safe-area-inset-right,0px));display:flex;gap:6px;pointer-events:none">
+ <button type="button" id="bama-hood" style="display:none;pointer-events:auto;background:#17252cec;color:#fff;border:1px solid #ffffff60;border-radius:9px;padding:10px 9px;font:700 11px system-ui">OPEN HOOD</button>
+ <button type="button" id="bama-trunk" style="display:none;pointer-events:auto;background:#17252cec;color:#fff;border:1px solid #ffffff60;border-radius:9px;padding:10px 9px;font:700 11px system-ui">OPEN TRUNK</button>
+</div>
+<div id="bama-radio" style="display:none;position:fixed;z-index:1030;top:calc(58px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));width:min(240px,53vw);color:#f4f8fa;font:700 11px system-ui;background:#111923f0;border:1px solid #566271;border-radius:12px;padding:9px;pointer-events:auto">
+ <div style="letter-spacing:1px;margin-bottom:5px">BOX CHEVY AUDIO • <span id="bama-kit-name">STOCK</span></div>
+ <div style="display:flex;gap:5px">
+ <button type="button" id="bama-load" style="flex:1;background:#a52335;color:white;border:0;border-radius:6px;padding:7px">LOAD SONG</button>
+ <button type="button" id="bama-demo" style="flex:1;background:#3d4852;color:white;border:0;border-radius:6px;padding:7px">DEMO BEAT</button>
+ </div>
+ <input id="bama-file" type="file" accept="audio/*" hidden>
+ <audio id="bama-music" controls playsinline preload="none" style="width:100%;height:30px;margin-top:5px;display:none"></audio>
+ <div style="height:4px;background:#293641;margin-top:6px;border-radius:4px;overflow:hidden"><div id="bama-bass-meter" style="height:100%;background:#e6505a;width:0%"></div></div>
+</div>
