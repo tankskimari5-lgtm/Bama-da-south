@@ -1,12 +1,14 @@
 {
   "name": "bama-da-south",
-  "version": "3.3.1-audio",
+  "version": "3.4.0-box-shop",
   "private": true,
-  "description": "Bama Da South 3D mobile web game — bass-reactive audio development build",
+  "description": "Bama Box Chevy only, hood/trunk interaction, paid trunk speaker upgrades",
   "scripts": {
-    "build": "node build-audio.mjs",
+    "build": "node build-box-shop.mjs",
     "unpack": "node build.mjs --unpack",
     "preview": "npx serve dist"
   },
-  "engines": {"node": ">=20"}
+  "engines": {
+    "node": ">=20"
+  }
 }
