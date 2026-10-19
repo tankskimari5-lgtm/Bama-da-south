@@ -4,7 +4,7 @@ let html=fs.readFileSync('dist/index.html','utf8');
 function patch(a,b,label){
  const i=html.indexOf(a);
  if(i<0||(html.indexOf(a,i+1)!==-1 && label!=='garage menu audio purchase'))throw Error('Unsafe '+label+' patch (anchor absent or unexpectedly duplicated)');
- html=html.replace(a,b);
+ html=html.replace(a,()=>b);
 }
 function patchRange(start,end,replacement,label){
  const a=html.indexOf(start);if(a<0)throw Error(label+' start missing');
