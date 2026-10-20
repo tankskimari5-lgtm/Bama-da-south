@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#e9e4da" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23294739'/%3E%3Cpath d='M8 10h16v4h-6v13h-4V14H8z' fill='%23e7e1d6'/%3E%3C/svg%3E"
+    />
+    <title>TRUE LIFE — Character Studio</title>
+  </head>
+  <body>
+    <div id="studio-canvas" aria-label="Interactive character preview"></div>
+    <header>
+      <a href="/" class="logo">TRUE<span>LIFE</span></a
+      ><span class="chapter">CHARACTER STUDIO / 02</span
+      ><a href="/" class="game-link">Back to Eastbrook ↗</a>
+    </header>
+    <main>
+      <section class="intro">
+        <div class="eyebrow">AN ORIGINAL PROCEDURAL HUMAN</div>
+        <h1>A face.<br />A whole story.</h1>
+        <p>
+          Shape your character. Explore every angle.<br />Then take them into
+          Eastbrook.
+        </p>
+      </section>
+      <section class="preview-ui">
+        <nav id="views" aria-label="Camera views">
+          <button data-view="front" class="selected">Front</button
+          ><button data-view="side">Side</button
+          ><button data-view="back">Back</button
+          ><button data-view="face">Face</button
+          ><button id="rotate">Rotate · off</button>
+        </nav>
+        <div class="animation">
+          <span>MOTION STUDY</span>
+          <div id="animations"></div>
+          <label class="speed-label"
+            >Playback
+            <input
+              id="playback"
+              type="range"
+              min="0"
+              max="1.5"
+              step="0.1"
+              value="1"
+            /><output id="playback-value">1×</output></label
+          >
+        </div>
+        <div id="metrics"></div>
+      </section>
+      <aside class="customizer">
+        <div class="panel-title">
+          <span>YOUR CHARACTER</span><button id="reset">Reset</button>
+        </div>
+        <div class="tabs">
+          <button data-tab="form" class="selected">Form</button
+          ><button data-tab="face">Face</button
+          ><button data-tab="style">Style</button>
+        </div>
+        <div id="fields"></div>
+        <div class="expression-row">
+          <label
+            >Expression<select id="expression">
+              <option value="neutral">Neutral</option>
+              <option value="smile">Smile</option>
+              <option value="frown">Frown</option>
+              <option value="talk">Talking</option>
+            </select></label
+          ><button id="anatomy">Show anatomy</button>
+        </div>
+        <button id="apply" class="primary">
+          Use in TRUE LIFE <span>→</span>
+        </button>
+        <div class="file-actions">
+          <button id="export-config">Export appearance</button
+          ><label
+            >Import appearance<input
+              id="import-config"
+              type="file"
+              accept="application/json"
+          /></label>
+        </div>
+        <div id="message" role="status">Appearance saves on this device.</div>
+        <p class="note">
+          Every surface is generated in code. This is a procedural character
+          study; anatomy and facial likeness can still be refined.
+        </p>
+      </aside>
+    </main>
+    <div id="studio-loading">Creating your character…</div>
+    <div id="studio-error" hidden></div>
+    <script type="module" src="/src/showroom.js"></script>
+  </body>
+</html>

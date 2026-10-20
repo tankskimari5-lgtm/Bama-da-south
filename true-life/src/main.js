@@ -1,3 +1,4 @@
+import { normalizeAppearance } from "./human/config.js";
 import "./style.css";
 import * as T from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -59,6 +60,7 @@ let state,
   context = null,
   audio = null,
   soundEnabled = false,
+  talkFor = 0,
   elapsed = 0;
 let loaded = false;
 try {
@@ -66,6 +68,12 @@ try {
   loaded = !!loadState(localStorage);
 } catch {
   state = freshState();
+}
+if (!loaded) {
+  try {
+    const config = JSON.parse(localStorage.getItem("true-life-character-v2"));
+    if (config) state.appearance = normalizeAppearance(config);
+  } catch {}
 }
 const coarse = matchMedia("(pointer:coarse)").matches;
 if (!loaded && coarse) state.settings.quality = "low";
@@ -124,7 +132,8 @@ function rebuildPlayer() {
       V(state.position.x, 0, state.position.z),
     yaw = player?.group.rotation.y || 0;
   if (player) disposeCharacter(player);
-  player = createCharacter(state.appearance);
+  player = createCharacter(state.appearance, { detail: "game" });
+  if (state.settings.quality === "low") player.setDetail("low");
   player.group.position.copy(p);
   player.group.rotation.y = yaw;
   scene.add(player.group);
@@ -492,6 +501,9 @@ function interact() {
       value.lastDay = state.day;
     }
     state.friends[c.id] = value;
+    talkFor = 3;
+    const neighbor = world.npcs.find((n) => n.name === c.id);
+    if (neighbor) neighbor.talkFor = 3;
     notify(
       first
         ? `${c.id}: “Welcome to Eastbrook! Maya’s hiring at Juniper Café.”`
@@ -671,7 +683,17 @@ function updateUI() {
 function setupUI() {
   const fields = ["gender", "skin", "hair", "build", "outfit", "face"];
   $("player-name").value = state.name;
-  for (const f of fields) $(f).value = state.appearance[f];
+  for (const f of fields) {
+    const select = $(f);
+    const value = state.appearance[f];
+    if (!Array.from(select.options).some((o) => o.value === value)) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = f === "hair" ? value : "Studio custom";
+      select.append(option);
+    }
+    select.value = value;
+  }
   $("start").innerHTML = loaded
     ? "Continue your story <span>→</span>"
     : "Begin your story <span>→</span>";
@@ -792,6 +814,10 @@ function setupUI() {
 }
 function applyQuality() {
   const q = state.settings.quality;
+  if (player) {
+    if (q === "low") player.setDetail("low");
+    else player.lod.autoUpdate = true;
+  }
   renderer.setPixelRatio(
     Math.min(devicePixelRatio, q === "high" ? 2 : q === "low" ? 1 : 1.5),
   );
@@ -824,7 +850,9 @@ const cameraTarget = V(),
   ray = new T.Raycaster();
 function cameraUpdate(dt) {
   const focus = driving ? car.group.position : player.group.position;
-  cameraTarget.copy(focus).add(V(0, driving ? 1.25 : 1.27, 0));
+  cameraTarget
+    .copy(focus)
+    .add(V(0, driving ? 1.25 : state.appearance.height * 0.71, 0));
   const distance = driving ? 7.5 : 4.2,
     pitch = input.pitch + 0.18;
   desired
@@ -969,6 +997,8 @@ function update(dt) {
         crouch: input.crouch,
         air: player.group.position.y > ground + 0.05,
         sit: sitting,
+        talk: talkFor > 0 ? 1 : 0,
+        expression: talkFor > 0 ? "smile" : "neutral",
       });
       if (sitting) {
         state.energy = clamp(state.energy + dt * 0.08, 0, 100);
@@ -983,6 +1013,7 @@ function update(dt) {
       }
     }
     doorTimer = Math.max(0, doorTimer - dt);
+    talkFor = Math.max(0, talkFor - dt);
     saveTimer += dt;
     if (saveTimer > 12) {
       saveTimer = 0;

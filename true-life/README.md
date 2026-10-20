@@ -2,6 +2,10 @@
 
 An original third-person browser life simulator. All 3D characters, vehicles, buildings, signs, and surface textures are generated locally in JavaScript. No external game assets or asset CDN is used. Three.js is bundled with the app.
 
+## Character Studio revision 2
+
+Visit `/character.html` for front/side/back views, a face close-up, geometry-based appearance controls, twelve animation studies, expressions, hairstyle/facial-hair choices, and appearance import/export. Use in TRUE LIFE preserves your existing game progression. The character now has a 52-bone rig, procedural skin/eye/fabric shaders, anatomical surface generators, a connected implicit-surface T-shirt, and speed-dependent leg IK. No game assets are downloaded. See [CHARACTER_SYSTEM.md](CHARACTER_SYSTEM.md) for architecture, test commands, and current visual limits.
+
 ## Run
 
 ```sh
@@ -38,7 +42,7 @@ Mobile: left walking joystick, viewport drag to look, RUN / jump / LOW buttons, 
 
 ## Architecture
 
-- `src/character.js`: original anatomy, skeleton, weighted surfaces, rigid face and hand details, and procedural pose animation.
+- `src/character.js` and `src/human/`: original anatomy, shaders, facial morphs, hair, garments, full hand/foot skeleton and procedural pose animation.
 - `src/vehicle.js`: original panel, body loft, interior, wheel, light, and animated pivot generators.
 - `src/geometry.js`: original surface, material, canvas texture, sign, world UV, and mesh batching utilities.
 - `src/world.js`: neighborhood, collisions, pedestrians, traffic signals, locations, and interiors.

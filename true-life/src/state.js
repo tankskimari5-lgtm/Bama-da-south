@@ -1,3 +1,4 @@
+import { normalizeAppearance } from "./human/config.js";
 export const SAVE_KEY = "true-life-open-world-v1";
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 export const money = (n) => "$" + Math.round(n).toLocaleString("en-US");
@@ -16,14 +17,7 @@ export function freshState() {
     yaw: 0,
     interior: null,
     returnPoint: null,
-    appearance: {
-      gender: "masculine",
-      skin: "#b67c57",
-      hair: "short",
-      build: "regular",
-      outfit: "#536f64",
-      face: "soft",
-    },
+    appearance: normalizeAppearance(),
     car: { x: 5, z: 26, yaw: 0, fuel: 100, condition: 100, owned: true },
     visited: [],
     completed: [],
@@ -94,6 +88,7 @@ export function validateSave(s) {
     throw Error("Unknown interior.");
   const safe = structuredClone(s);
   safe.position.y = 0;
+  safe.appearance = normalizeAppearance(safe.appearance);
   safe.settings = {
     quality: ["low", "medium", "high"].includes(s.settings?.quality)
       ? s.settings.quality

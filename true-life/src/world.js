@@ -381,11 +381,14 @@ export function createWorld(scene) {
     ["Drew", 40, -10, "#69442e"],
   ];
   npcDefs.forEach(([name, x, z, skin], i) => {
-    const ch = createCharacter({
-      skin,
-      outfit: ["#736856", "#616f70", "#a17c54"][i % 3],
-      hair: i % 3 === 0 ? "long" : "short",
-    });
+    const ch = createCharacter(
+      {
+        skin,
+        outfit: ["#736856", "#616f70", "#a17c54"][i % 3],
+        hair: i % 3 === 0 ? "long" : "short",
+      },
+      { detail: "npc" },
+    );
     ch.group.position.set(x, 0.12, z);
     outside.add(ch.group);
     npcs.push({
@@ -506,11 +509,14 @@ export function createWorld(scene) {
             b(0.5, 0.48, 0.5, x + xx, 0.24, z, fabric);
         }
       sign(inside, "JUNIPER  /  COFFEE & GOOD COMPANY", 0, 2.4, -5.86, 8);
-      const clerk = createCharacter({
-        skin: "#69432e",
-        outfit: "#b99e78",
-        hair: "long",
-      });
+      const clerk = createCharacter(
+        {
+          skin: "#69432e",
+          outfit: "#b99e78",
+          hair: "long",
+        },
+        { detail: "npc" },
+      );
       clerk.group.position.set(1, 0, -4.4);
       clerk.group.rotation.y = Math.PI;
       inside.add(clerk.group);
@@ -594,7 +600,11 @@ export function createWorld(scene) {
             : Math.PI / 2;
       n.group.visible =
         outside.visible && n.group.position.distanceTo(playerPos) < 52;
-      n.animate(dt, n.speed);
+      n.talkFor = Math.max(0, (n.talkFor || 0) - dt);
+      if (n.group.visible)
+        n.animate(dt, n.talkFor > 0 ? 0 : n.speed, {
+          talk: n.talkFor > 0 ? 1 : 0,
+        });
       n.group.position.y = 0.12;
     }
     for (const t of traffic) {
