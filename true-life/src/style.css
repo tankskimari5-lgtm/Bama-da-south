@@ -1,0 +1,949 @@
+:root {
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: #f4f2e9;
+  background: #182623;
+  font-synthesis: none;
+  --gold: #e6c48a;
+  --muted: #c3cec5;
+  --panel: #192b25e8;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+  color: inherit;
+  border: 1px solid #ffffff22;
+  background: #263d32d9;
+  border-radius: 9px;
+  padding: 11px 15px;
+}
+button:hover {
+  background: #3f5544;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+button:disabled {
+  opacity: 0.4;
+}
+button.primary {
+  background: var(--gold);
+  color: #26372b;
+  border: 0;
+  font-weight: 800;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 17px 20px;
+  font-size: 14px;
+}
+button.primary:hover {
+  background: #f5dbaa;
+}
+[hidden] {
+  display: none !important;
+}
+#game,
+#game canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    #10251f66,
+    transparent 22%,
+    transparent 74%,
+    #0d201c77
+  );
+}
+#hud button,
+#hud canvas {
+  pointer-events: auto;
+}
+.topbar {
+  position: absolute;
+  top: max(26px, env(safe-area-inset-top));
+  left: max(30px, env(safe-area-inset-left));
+  right: max(30px, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.brand {
+  font-family: Manrope, system-ui, sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -1.3px;
+  text-shadow: 0 2px 20px #0008;
+}
+.brand span {
+  font-weight: 400;
+  margin-left: 3px;
+}
+.brand small {
+  display: block;
+  font:
+    500 8px "DM Sans",
+    sans-serif;
+  letter-spacing: 2.1px;
+  margin-top: 3px;
+  color: #d5e1d3;
+}
+.world-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 1px solid #ffffff50;
+  padding-left: 24px;
+  font-size: 12px;
+  font-weight: 600;
+}
+#weather-label {
+  font-size: 10px;
+  font-weight: 400;
+  color: #e1e6dc;
+}
+.icon-button {
+  margin-left: auto;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  backdrop-filter: blur(10px);
+}
+.status {
+  position: absolute;
+  top: 100px;
+  right: 30px;
+  text-align: right;
+}
+.balance {
+  margin-bottom: 16px;
+}
+.balance small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #dae3d9;
+}
+.balance strong {
+  font:
+    700 29px Manrope,
+    sans-serif;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 15px #0009;
+}
+.needs {
+  padding: 12px 14px;
+  border: 1px solid #ffffff1f;
+  border-radius: 12px;
+  background: #18312b99;
+  backdrop-filter: blur(10px);
+  width: 157px;
+}
+.needs label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  font-size: 10px;
+  margin: 7px 0;
+}
+meter {
+  width: 69px;
+  height: 7px;
+  appearance: none;
+  border: 0;
+  background: #ffffff22;
+  border-radius: 5px;
+  overflow: hidden;
+}
+meter::-webkit-meter-bar {
+  background: #ffffff22;
+  border: 0;
+}
+meter::-webkit-meter-optimum-value {
+  background: #e6c48a;
+}
+meter::-moz-meter-bar {
+  background: #e6c48a;
+}
+.journal {
+  position: absolute;
+  top: 118px;
+  left: 30px;
+  width: 226px;
+  border-left: 2px solid var(--gold);
+  padding: 3px 0 3px 15px;
+  text-shadow: 0 2px 10px #000;
+}
+.journal > small {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.9px;
+  color: var(--gold);
+}
+.journal h2 {
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 8px 0;
+}
+.journal p {
+  font-size: 11px;
+  color: #edf0e4;
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+.journal button {
+  font-size: 10px;
+  padding: 7px 10px;
+  background: #1c332acc;
+  border-color: #ffffff2b;
+}
+.journal button span {
+  margin-left: 25px;
+  color: var(--gold);
+}
+.map-wrap {
+  position: absolute;
+  bottom: 29px;
+  left: 30px;
+  width: 204px;
+}
+.map-wrap button {
+  padding: 0;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ede9d047;
+  box-shadow: 0 10px 35px #0003;
+}
+.map-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 132px;
+}
+.map-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1b3029f5;
+  padding: 10px 12px;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-align: left;
+}
+.map-label i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.map-label b {
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 15px;
+}
+#save-label {
+  font-size: 7px;
+  letter-spacing: 1.6px;
+  color: #d3ddd1;
+  margin-top: 10px;
+  padding-left: 4px;
+}
+.context {
+  position: absolute;
+  bottom: 87px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 180px;
+}
+#context-text {
+  font-size: 11px;
+  text-shadow: 0 2px 8px #000;
+  background: #1b3029bf;
+  border-radius: 7px;
+  padding: 6px 10px;
+}
+#context-text:empty {
+  display: none;
+}
+#interact {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  background: #eae7d8;
+  color: #26392e;
+  box-shadow: 0 4px 30px #0003;
+  font-size: 12px;
+  font-weight: 700;
+}
+kbd {
+  font-family: inherit;
+  display: inline-flex;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 9px;
+}
+.desktop-help {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  white-space: nowrap;
+  font-size: 9px;
+  color: #e0e7da;
+}
+.desktop-help kbd {
+  margin-right: 4px;
+}
+#toast {
+  position: absolute;
+  top: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 430px;
+  width: max-content;
+  padding: 12px 18px;
+  background: #1d372eeb;
+  border: 1px solid #dfc38b60;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.2s;
+  text-align: center;
+}
+#toast.show {
+  opacity: 1;
+}
+#waypoint {
+  position: absolute;
+  top: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 7px 12px;
+  color: #ffe2ac;
+  background: #14282099;
+  border: 1px solid #efd2a344;
+  border-radius: 7px;
+  font-size: 11px;
+}
+#speedometer {
+  position: absolute;
+  bottom: 36px;
+  right: 30px;
+  text-align: right;
+}
+#speedometer strong {
+  font:
+    600 60px Manrope,
+    sans-serif;
+  letter-spacing: -3px;
+}
+#speedometer > small {
+  font-size: 10px;
+  margin-left: 8px;
+}
+#car-info {
+  font-size: 9px;
+  margin: 0 0 12px;
+  color: #e0e9dc;
+}
+#speedometer button {
+  font-size: 9px;
+  padding: 6px;
+  margin-left: 4px;
+}
+#walk-controls,
+#drive-controls {
+  display: none;
+}
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 20%, #14251d33 50%, #13261cbb);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 35px 7vw;
+  overflow: auto;
+  touch-action: pan-y;
+}
+.sheet {
+  background: var(--panel);
+  backdrop-filter: blur(22px);
+  border: 1px solid #c8d8bc33;
+  border-radius: 19px;
+  padding: 32px;
+  width: 440px;
+  max-height: calc(100dvh - 50px);
+  overflow: auto;
+  box-shadow: 0 20px 80px #07130d50;
+  touch-action: pan-y;
+}
+.sheet .eyebrow {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.3px;
+  color: var(--gold);
+}
+.sheet h1 {
+  font:
+    500 55px/1.07 Manrope,
+    sans-serif;
+  letter-spacing: -3px;
+  margin: 19px 0 16px;
+}
+.sheet h2 {
+  font:
+    600 27px/1.25 Manrope,
+    sans-serif;
+  letter-spacing: -1px;
+}
+.sheet p {
+  font-size: 12px;
+  color: #cbd6ca;
+  line-height: 1.8;
+  margin: 0 0 21px;
+}
+.sheet label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 10px;
+  color: #d4ddcd;
+}
+.sheet input,
+.sheet select {
+  width: 100%;
+  border: 1px solid #d7dec12f;
+  background: #ffffff09;
+  color: #f1f0e2;
+  border-radius: 7px;
+  padding: 10px;
+  font-size: 12px;
+  user-select: auto;
+}
+.sheet select option {
+  background: #26372c;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 15px 0 20px;
+}
+.welcome-foot {
+  text-align: center;
+  margin: 17px 0 10px !important;
+  font-size: 10px !important;
+}
+.welcome-foot span {
+  color: #92a592;
+}
+.classic {
+  display: block;
+  text-align: center;
+  color: #c1cbb5;
+  font-size: 10px;
+  text-decoration: none;
+  margin-top: 16px;
+}
+.settings {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+.settings > label {
+  flex: 1;
+}
+.button-row {
+  display: flex;
+  gap: 8px;
+  margin: 17px 0;
+}
+.button-row > * {
+  flex: 1;
+  font-size: 10px;
+  text-align: center;
+  padding: 11px 6px;
+  white-space: nowrap;
+}
+.file-label {
+  border: 1px solid #ffffff22;
+  background: #263d32d9;
+  border-radius: 9px;
+  cursor: pointer;
+  display: block !important;
+}
+.file-label input {
+  display: none;
+}
+.sheet > button:not(.primary) {
+  width: 100%;
+  margin-top: 9px;
+}
+.controls-note {
+  font-size: 10px !important;
+  margin: 20px 0 0 !important;
+}
+#destination-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+#destination-list button {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 15px;
+}
+#destination-list small {
+  color: var(--gold);
+}
+#loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #182623;
+  z-index: 10;
+}
+.wordmark {
+  font:
+    800 44px Manrope,
+    sans-serif;
+  letter-spacing: -2px;
+}
+.wordmark span {
+  font-weight: 400;
+  margin-left: 4px;
+}
+.wordmark small {
+  display: block;
+  font:
+    400 9px "DM Sans",
+    sans-serif;
+  letter-spacing: 4px;
+  text-align: center;
+  margin-top: 9px;
+}
+.loading-line {
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e6c48a, transparent);
+  margin-top: 45px;
+  animation: pulse 1s infinite alternate;
+}
+#loading p {
+  font-size: 11px;
+  color: #becbb9;
+}
+#fatal {
+  position: fixed;
+  inset: 0;
+  background: #182623;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+}
+#fatal a {
+  color: var(--gold);
+  margin-top: 25px;
+}
+@keyframes pulse {
+  to {
+    opacity: 0.25;
+  }
+}
+@media (max-width: 700px) {
+  .topbar {
+    top: max(14px, env(safe-area-inset-top));
+    left: 16px;
+    right: 16px;
+    gap: 16px;
+  }
+  .brand {
+    font-size: 20px;
+  }
+  .brand small {
+    font-size: 6px;
+    letter-spacing: 1.5px;
+  }
+  .world-info {
+    font-size: 10px;
+    padding-left: 13px;
+  }
+  .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+  .status {
+    top: 79px;
+    right: 15px;
+  }
+  .balance strong {
+    font-size: 23px;
+  }
+  .balance small {
+    font-size: 7px;
+  }
+  .needs {
+    width: 128px;
+    padding: 7px 10px;
+  }
+  .needs label {
+    font-size: 9px;
+    margin: 6px 0;
+  }
+  meter {
+    width: 53px;
+  }
+  .journal {
+    top: 89px;
+    left: 16px;
+    width: 175px;
+    padding-left: 11px;
+  }
+  .journal h2 {
+    font-size: 14px;
+  }
+  .journal p {
+    font-size: 10px;
+  }
+  .journal > small {
+    font-size: 7px;
+  }
+  .map-wrap {
+    left: 16px;
+    bottom: 157px;
+    width: 135px;
+  }
+  .map-wrap canvas {
+    height: 88px;
+  }
+  .map-label {
+    font-size: 6px;
+    padding: 6px 8px;
+    letter-spacing: 0.8px;
+  }
+  .map-label b {
+    font-size: 12px;
+  }
+  #save-label {
+    font-size: 6px;
+    letter-spacing: 0.7px;
+    margin-top: 5px;
+  }
+  .desktop-help {
+    display: none;
+  }
+  .context {
+    bottom: 169px;
+    left: auto;
+    right: 16px;
+    transform: none;
+    min-width: 0;
+    max-width: 180px;
+    align-items: flex-end;
+  }
+  #context-text {
+    font-size: 9px;
+  }
+  #interact {
+    font-size: 11px;
+    padding: 12px 14px;
+    gap: 9px;
+  }
+  #interact kbd {
+    display: none;
+  }
+  #modal-layer {
+    padding: 15px;
+    justify-content: center;
+    background: #10251b55;
+  }
+  .sheet {
+    width: 100%;
+    max-width: 430px;
+    padding: 24px;
+    max-height: calc(100dvh - 30px);
+  }
+  .sheet h1 {
+    font-size: 42px;
+    margin: 15px 0;
+  }
+  .sheet p {
+    font-size: 11px;
+    margin-bottom: 16px;
+  }
+  .form-grid {
+    gap: 9px;
+    margin: 12px 0 16px;
+  }
+  .sheet input,
+  .sheet select {
+    padding: 9px;
+  }
+  .welcome-foot {
+    margin-top: 13px !important;
+  }
+  .sheet .eyebrow {
+    font-size: 8px;
+  }
+  .sheet button.primary {
+    padding: 14px;
+  }
+  .status .balance {
+    margin-bottom: 10px;
+  }
+  #toast {
+    top: 62px;
+    max-width: 88vw;
+    font-size: 11px;
+    width: max-content;
+  }
+  #speedometer {
+    bottom: 167px;
+    right: 18px;
+  }
+  #speedometer strong {
+    font-size: 39px;
+  }
+  #car-info {
+    font-size: 8px;
+  }
+  #speedometer button {
+    font-size: 8px;
+  }
+  body.driving .context {
+    bottom: 270px;
+  }
+  #waypoint {
+    top: 241px;
+    font-size: 10px;
+  }
+}
+@media (pointer: coarse) {
+  #walk-controls,
+  #drive-controls {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .desktop-help {
+    display: none;
+  }
+  #joystick {
+    pointer-events: auto;
+    position: absolute;
+    bottom: max(24px, env(safe-area-inset-bottom));
+    left: max(25px, env(safe-area-inset-left));
+    width: 116px;
+    height: 116px;
+    background: #20392b60;
+    border: 1px solid #edf2d845;
+    border-radius: 50%;
+    touch-action: none;
+  }
+  #stick {
+    position: absolute;
+    left: 35px;
+    top: 35px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e5e9d080;
+    border: 1px solid #ffffff55;
+    pointer-events: none;
+  }
+  .actions {
+    position: absolute;
+    bottom: 29px;
+    right: 22px;
+    display: grid;
+    grid-template-columns: 55px 59px;
+    gap: 9px;
+    align-items: end;
+    pointer-events: auto;
+  }
+  .actions button {
+    width: 55px;
+    height: 47px;
+    border-radius: 50%;
+    font-size: 9px;
+    background: #273e2fab;
+  }
+  .actions #jump {
+    width: 59px;
+    height: 59px;
+    font-size: 26px;
+    grid-row: span 2;
+  }
+  .steering,
+  .pedals {
+    position: absolute;
+    bottom: max(26px, env(safe-area-inset-bottom));
+    display: flex;
+    gap: 14px;
+    pointer-events: auto;
+  }
+  .steering {
+    left: 20px;
+  }
+  .pedals {
+    right: 20px;
+    align-items: flex-end;
+  }
+  .steering button {
+    width: 63px;
+    height: 67px;
+    font-size: 24px;
+    background: #233d31c9;
+  }
+  .pedals button {
+    width: 63px;
+    height: 80px;
+    font-size: 9px;
+    background: #233d31d9;
+  }
+  .pedals button:last-child {
+    height: 101px;
+    background: #d4c397d9;
+    color: #263a2c;
+  }
+  .map-wrap {
+    bottom: 157px;
+  }
+  .context {
+    bottom: 169px;
+  }
+  #speedometer {
+    bottom: 167px;
+  }
+  body.driving .context {
+    bottom: 270px;
+  }
+}
+@media (max-height: 530px) and (orientation: landscape) {
+  .sheet {
+    max-width: 560px;
+    padding: 20px;
+  }
+  .sheet h1 {
+    font-size: 30px;
+    margin: 8px 0;
+  }
+  .welcome > p,
+  .welcome-foot {
+    display: none;
+  }
+  .form-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .sheet input,
+  .sheet select {
+    padding: 6px;
+  }
+  .journal {
+    top: 80px;
+    width: 190px;
+  }
+  .journal p {
+    display: none;
+  }
+  .status {
+    top: 75px;
+  }
+  .needs {
+    display: none;
+  }
+  .map-wrap {
+    width: 123px;
+    bottom: 124px;
+  }
+  .map-wrap canvas {
+    height: 70px;
+  }
+  .context {
+    bottom: 130px;
+  }
+  .topbar {
+    top: 12px;
+  }
+  #joystick {
+    width: 94px;
+    height: 94px;
+    bottom: 16px;
+  }
+  #stick {
+    left: 24px;
+    top: 24px;
+  }
+  .actions {
+    bottom: 16px;
+  }
+  #speedometer {
+    bottom: 130px;
+  }
+  body.driving .context {
+    bottom: 215px;
+  }
+}

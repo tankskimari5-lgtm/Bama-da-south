@@ -1,489 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b1224" />
-<title>TRUE LIFE — The Choices You Make | Life Simulator V2</title>
-<style>
-:root{--bg:#0b1224;--panel:#141e34;--panel2:#1b2942;--line:#2a3954;--muted:#91a3bd;--text:#f2f6ff;--accent:#66e1bd;--blue:#7daaff;--gold:#ffc976;--red:#ff7788;--shadow:0 24px 70px #03081355}
-*{box-sizing:border-box}html{-webkit-tap-highlight-color:transparent}body{margin:0;background:radial-gradient(ellipse 750px 500px at 80% -12%,#20395b 0%,transparent 70%),var(--bg);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);min-height:100svh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.36;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.shell{max-width:1240px;margin:auto;padding:24px 28px 112px}.header{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}.brand{display:flex;gap:12px;align-items:center}.mark{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(130deg,#65e6bf,#4bb2cb);color:#082834;font-size:24px;font-weight:950;box-shadow:0 8px 35px #47dbaf33}.brand h1{font-size:19px;letter-spacing:.13em;margin:0;font-weight:900}.brand h1 span{color:var(--accent)}.brand small{font-size:11px;letter-spacing:.12em;color:var(--muted);font-weight:650}.topright{display:flex;gap:10px;align-items:center}.ghost,.pill{border:1px solid var(--line);border-radius:12px;background:#17243b;color:var(--text);padding:10px 13px;font-size:12px;font-weight:800}.pill{cursor:default;background:#132038;color:var(--muted)}.ghost:hover,.navbutton:hover,.action:hover,.option:hover{border-color:#587498;background:#223452}.layout{display:grid;grid-template-columns:226px 1fr;gap:22px;align-items:start}.sidebar{position:sticky;top:20px}.navbutton{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1px solid transparent;background:transparent;color:#a8bbd4;border-radius:14px;padding:15px 18px;margin-bottom:5px;font-weight:750;font-size:14px}.navbutton .ico{font-size:20px;width:24px;text-align:center}.navbutton.active{background:#21344d;color:#dffff2;border-color:#375a69}.navbutton.active:before{content:'';height:20px;width:3px;border-radius:5px;background:var(--accent);margin-left:-8px}.sidetip{background:linear-gradient(145deg,#1b2b42,#142039);border-radius:18px;padding:16px;margin-top:28px;border:1px solid var(--line)}.sidetip .eyebrow{color:var(--accent);font-size:11px;font-weight:850;letter-spacing:.1em}.sidetip p{font-size:12px;line-height:1.6;color:#b4c3d5;margin:9px 0 0}.main{min-width:0}.hero{display:flex;justify-content:space-between;gap:26px;align-items:center;background:linear-gradient(110deg,#203a51,#213348 58%,#283456);border:1px solid #385470;border-radius:23px;padding:26px 28px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:'';position:absolute;right:-100px;top:-150px;width:320px;height:320px;border:75px solid #a4b3ff0c;border-radius:50%;pointer-events:none}.playerrow{display:flex;gap:18px;align-items:center;min-width:0}.avatar{width:85px;height:85px;flex:0 0 85px;border-radius:23px;border:1px solid #88b4ce70;background:linear-gradient(140deg,#51939b,#445077);display:grid;place-items:center;font-size:53px;box-shadow:inset 0 -12px 25px #101b3461}.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--accent)}.playerinfo h2{font-size:28px;line-height:1.2;margin:6px 0 8px;white-space:normal}.playerinfo p{font-size:13px;color:#bccddd;margin:0;line-height:1.5}.herofigs{display:flex;gap:8px;position:relative;z-index:1}.figure{padding:15px 17px;border-radius:14px;border:1px solid #6884a53d;background:#0e1c345e;min-width:114px}.figure small{display:block;color:#a4b5c8;font-size:11px;font-weight:750;margin-bottom:6px}.figure strong{font-size:23px;letter-spacing:-.04em}.figure strong.mint{color:var(--accent)}.stats{margin:18px 0 22px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px 13px 13px;min-width:0}.stat .statlabel{display:flex;justify-content:space-between;gap:4px;font-size:11px;color:#aebed1;font-weight:750}.stat .statlabel em{font-style:normal;color:#edf5ff}.bar{height:6px;background:#303d56;border-radius:6px;overflow:hidden;margin-top:11px}.bar i{display:block;height:100%;border-radius:6px;background:var(--accent);transition:width .25s}.two{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(260px,1fr);gap:20px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:23px;margin-bottom:20px}.paneltitle{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}.paneltitle h3{font-size:17px;letter-spacing:-.01em;margin:0}.paneltitle span{font-size:11px;color:var(--muted);font-weight:750}.intro{font-size:13px;color:#aabbd0;line-height:1.6;margin:0 0 17px}.actiongrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.action{min-height:89px;border:1px solid #31415d;background:#1b2940;border-radius:13px;text-align:left;color:var(--text);padding:13px 13px;display:flex;align-items:flex-start;gap:11px;transition:background .15s,border-color .15s}.action .actionico{width:37px;height:37px;flex:0 0 37px;border-radius:11px;display:grid;place-items:center;background:#31455c;font-size:20px}.action strong{font-size:12px;display:block;margin:3px 0 6px;line-height:1.25}.action small{font-size:11px;line-height:1.35;display:block;color:#aabbd0}.primary{color:#091c28;font-weight:900;background:linear-gradient(130deg,#7ae9c8,#5ed6a4);border:0;border-radius:13px;padding:15px 20px;box-shadow:0 10px 23px #56daa122;transition:transform .15s;white-space:nowrap}.primary:hover:not(:disabled){transform:translateY(-1px)}.primary:disabled{opacity:.4}.bottomrow{display:flex;align-items:center;justify-content:space-between;gap:15px;border:1px solid #355364;background:linear-gradient(125deg,#1b3d45,#1d3240);border-radius:17px;padding:19px 22px;margin-bottom:20px}.bottomrow h3{font-size:16px;margin:0 0 4px}.bottomrow p{font-size:12px;color:#b9ccdc;margin:0}.feed{display:flex;flex-direction:column;gap:0}.entry{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #25344d}.entry:last-child{border-bottom:0;padding-bottom:0}.feedico{width:32px;height:32px;background:#263854;border-radius:9px;display:grid;place-items:center;font-size:16px;flex:0 0 32px}.entry p{font-size:12px;line-height:1.5;margin:0;color:#c8d6e6}.entry small{font-size:10px;color:var(--muted);display:block;font-weight:700;margin-top:4px}.smallbutton{background:#263b4f;border:1px solid #416175;color:#c3f8e8;padding:8px 12px;border-radius:9px;font-size:11px;font-weight:850}.details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.detail{border:1px solid #2d3e5a;border-radius:11px;padding:13px;background:#19263b}.detail label{display:block;color:#8fa4bd;font-size:11px;font-weight:750;margin-bottom:6px}.detail strong{font-size:14px}.sectionlabel{font-weight:800;color:#8da4be;letter-spacing:.12em;text-transform:uppercase;font-size:10px;margin:3px 0 12px}.cardlist{display:flex;flex-direction:column;gap:10px}.listcard{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px;border:1px solid var(--line);border-radius:13px;background:#1a2940}.listcard h4{font-size:14px;margin:0 0 7px}.listcard p{color:#aabcce;font-size:11px;line-height:1.5;margin:0}.listcard .right{text-align:right;flex:0 0 auto}.listcard .cost{font-size:14px;font-weight:900;color:var(--accent);margin-bottom:7px}.listcard .cost.neg{color:var(--gold)}.chip{background:#2d405c;border-radius:8px;padding:6px 8px;font-size:10px;font-weight:850;color:#d5e4f4;display:inline-block}.red{color:var(--red)!important}.mint{color:var(--accent)!important}.gold{color:var(--gold)!important}.muted{color:var(--muted)!important}.headline{font-size:21px;font-weight:900;margin:0 0 6px}.explain{font-size:12px;color:#afc0d4;line-height:1.65;margin:0 0 20px}.moneygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 20px}.moneybox{padding:18px;border:1px solid #354760;background:#1b2a43;border-radius:13px}.moneybox small{color:#a8bed0;display:block;font-size:11px;margin-bottom:9px}.moneybox strong{font-size:20px}.footnote{color:#859bb6;font-size:11px;line-height:1.5;margin-top:12px}.empty{padding:18px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed #3d5170;border-radius:13px}.overlay{position:fixed;inset:0;z-index:20;background:#040b19b9;backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal{background:#17243a;border:1px solid #48607a;border-radius:24px;padding:26px;width:min(100%,490px);max-height:90svh;overflow-y:auto;box-shadow:0 28px 100px #0009}.modal h2{font-size:25px;margin:8px 0 12px;line-height:1.25}.modal p{font-size:13px;line-height:1.7;color:#c0cfdf;margin:0 0 19px}.modal .choice{width:100%;text-align:left;display:block;border:1px solid #3a4b65;background:#24354c;color:#f1f6ff;padding:15px;border-radius:13px;margin-top:9px}.modal .choice:hover{background:#2a4961;border-color:#75baa9}.choice strong{display:block;font-size:13px;margin-bottom:5px}.choice small{color:#b3c7d5;font-size:11px;line-height:1.5}.formrow{display:grid;gap:8px;margin:15px 0}.formrow label{font-size:11px;font-weight:850;color:#afc4da;text-transform:uppercase;letter-spacing:.06em}.formrow input,.formrow select{border:1px solid #45617b;background:#0d1b30;border-radius:11px;color:#f0f4ff;width:100%;padding:14px}.wide{width:100%;margin-top:13px}.modalbuttons{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}.modalbuttons button{flex:1}.modalvisual{font-size:50px;line-height:1.1}.eventbadge{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-top:18px}.toast{position:fixed;z-index:30;bottom:22px;left:50%;transform:translateX(-50%);background:#e0fff1;color:#16394b;padding:12px 18px;border-radius:13px;font-size:12px;font-weight:850;box-shadow:0 10px 40px #0007;max-width:calc(100% - 28px);text-align:center;opacity:0;pointer-events:none;transition:opacity .16s}.toast.show{opacity:1}.footer{color:#6c839f;text-align:center;font-size:11px;margin-top:12px;padding:0 14px 20px}
-@media(max-width:970px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;bottom:0;left:0;right:0;top:auto;z-index:10;background:#101c2eef;backdrop-filter:blur(18px);display:flex;justify-content:space-around;border-top:1px solid #35475f;padding:8px 6px calc(8px + env(safe-area-inset-bottom))}.navbutton{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;padding:8px 0;margin:0;border:0;border-radius:9px}.navbutton .ico{font-size:20px}.navbutton.active:before{display:none}.sidetip{display:none}.shell{padding:18px 18px 112px}.two{grid-template-columns:1fr 1fr}}
-@media(max-width:740px){.hero{padding:19px;display:block}.playerrow{gap:13px}.avatar{width:67px;height:67px;flex-basis:67px;font-size:41px;border-radius:18px}.playerinfo h2{font-size:21px}.playerinfo p{font-size:12px}.herofigs{margin-top:18px;display:grid;grid-template-columns:1fr 1fr}.figure{min-width:0;padding:11px 14px}.figure strong{font-size:20px}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.stat{padding:12px 11px}.two{grid-template-columns:1fr}.header{margin-bottom:15px}.panel{padding:18px;margin-bottom:13px}.bottomrow{padding:15px}.bottomrow h3{font-size:14px}.primary{padding:13px 16px}.action{min-height:85px;padding:10px;gap:8px}.action .actionico{width:32px;height:32px;flex-basis:32px;font-size:17px}.action strong{font-size:11px}.action small{font-size:10px}.moneygrid{gap:7px}.moneybox{padding:11px}.moneybox strong{font-size:16px}.shell{padding:14px 13px 112px}.topright .pill{display:none}.brand h1{font-size:16px}.brand .mark{height:37px;width:37px;font-size:19px}.ghost{padding:9px 11px}}
-@media(max-width:360px){.actiongrid{grid-template-columns:1fr}.moneygrid{grid-template-columns:1fr 1fr}.playerinfo h2{font-size:19px}.brand small{font-size:9px}.bottomrow{gap:7px}.bottomrow p{font-size:10px}.bottomrow .primary{font-size:11px}}
-
-/* Chapter Two visual upgrades — mobile-first layouts */
-:root{--accent:#75e8c0;--panel:#132238;--panel2:#203149;--line:#2c4058}
-body{background:radial-gradient(ellipse 650px 410px at 78% -8%,#234b53 0%,transparent 70%),radial-gradient(circle at 8% 27%,#131f3e 0%,transparent 33%),#0a1322}
-.hero{background:radial-gradient(circle at 76% 15%,#638b8950 0,transparent 33%),linear-gradient(115deg,#1a4550,#1a3347 55%,#242d52);border-color:#416471}
-.mark{background:linear-gradient(130deg,#7bf3be,#74bcd0)}
-.brand h1{letter-spacing:.115em}
-.navbutton{transition:background .2s,transform .2s}
-.navbutton:hover{transform:translateX(2px)}
-.v2-worldbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;background:#101f32;border:1px solid #31475b;border-radius:12px;padding:11px 14px;font-size:11px;color:#aabdd0;line-height:1.5}
-.v2-worldbar strong{color:#dceeea;letter-spacing:.06em;font-size:10px;margin-right:8px}
-.v2-dot{width:7px;height:7px;display:inline-block;border-radius:50%;background:#79e7bd;box-shadow:0 0 12px #56d8a7;margin-right:7px}.v2-dot.danger{background:#ffa07d;box-shadow:0 0 12px #d8956c}
-.v2-word{font-weight:900;letter-spacing:.2em;font-size:9px;color:#76e5c1;white-space:nowrap}
-.v2-spotlight{display:flex;align-items:center;justify-content:space-between;gap:15px;border-radius:18px;background:linear-gradient(120deg,#173e46,#1b344b);border:1px solid #34676b;padding:19px 22px;margin-bottom:17px}
-.v2-spotlight h3{font-size:18px;margin:7px 0 6px}.v2-spotlight p{font-size:12px;color:#c3d6de;line-height:1.45;margin:0}
-.v2-spotlight .smallbutton{white-space:nowrap}
-.v2-grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.v2-fact{border-radius:12px;border:1px solid #31465e;background:#1a2c43;padding:14px 12px;min-width:0}
-.v2-fact small{color:#a6bed1;font-size:11px;display:block;line-height:1.55;margin-bottom:7px}
-.v2-fact strong{color:#ecfbf7;font-size:17px;letter-spacing:-.03em;overflow-wrap:anywhere}
-.v2-meter{height:6px;background:#334661;border-radius:12px;overflow:hidden;margin-top:9px;width:100%}
-.v2-meter span{height:100%;background:linear-gradient(90deg,#47a7a7,#78ebbf);display:block;border-radius:12px}
-.v2-subsection{margin-top:16px;padding-top:16px;border-top:1px solid #293e56}.v2-subsection>strong{font-size:13px}.v2-subsection p{font-size:12px;color:#b5c9d9;line-height:1.6;margin:7px 0 11px}
-.v2-note{font-size:11px;line-height:1.7;color:#92abc4;margin-top:13px}
-.v2-detailcallout{padding:18px;border:1px solid #365568;background:linear-gradient(110deg,#1c3448,#182b40);border-radius:13px}.v2-detailcallout>strong{font-size:15px}.v2-detailcallout p{font-size:12px;color:#b6cddd;line-height:1.65}
-.v2-actions{display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap}
-.v2-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.v2-option{border:1px solid #334a62;border-radius:12px;padding:13px;background:#1a2c43;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
-.v2-option>div:first-child{min-width:0}.v2-option strong{font-size:12px;line-height:1.5;display:block}.v2-option small{font-size:10px;color:#a2b8ce;display:block;line-height:1.55;margin-top:5px}
-.v2-feature{border:1px solid #365469;border-radius:13px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#193448}.v2-feature h4{font-size:15px;margin:0 0 8px}.v2-feature p{font-size:12px;color:#b4c9d9;line-height:1.65;margin:0}
-.v2-moneyrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #304158;color:#c4d5e7;font-size:12px}
-.v2-moneyrow small{color:#8da7c3;font-size:10px;display:block;margin-top:5px}.v2-moneyrow strong{font-size:13px;color:#f1fbf7;white-space:nowrap;font-variant-numeric:tabular-nums}
-.v2-moneytotal{background:#1c3b45;padding:2px 12px;border:1px solid #427365;border-radius:10px;margin-top:9px}.v2-moneytotal .v2-moneyrow{border-bottom:0}.v2-moneytotal strong{color:#75e8c0;font-size:17px}
-.v2-chart{padding:12px 12px 6px;background:#182a3f;border:1px solid #30455d;border-radius:12px}.v2-chart svg{width:100%;height:160px;display:block;overflow:visible}.v2-chartlabels{display:flex;justify-content:space-between;align-items:center;gap:9px;color:#92acc4;font-size:10px;margin:6px 0}.v2-chartlabels strong{font-size:12px;color:#77ecc7}
-.v2-segments{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.v2-segment{border:1px solid #405672;background:#1a2b40;padding:10px 12px;border-radius:11px;color:#cbdde9;text-align:left;flex:1;min-width:95px;font-size:11px}.v2-segment strong{display:block}.v2-segment small{display:block;color:#95adc4;margin-top:5px;line-height:1.4}.v2-segment.picked{border-color:#80dfc0;background:#22504f;color:#eefff9;box-shadow:inset 0 0 0 1px #70e3b333}
-.v2-citygrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v2-city{background:#1b2b42;border:1px solid #35475f;padding:11px;border-radius:11px;display:flex;align-items:center;justify-content:space-between;gap:8px}.v2-city strong{font-size:11px;display:block}.v2-city small{font-size:10px;display:block;color:#9cafc5;margin-top:4px}
-.v2-people{display:flex;flex-direction:column;gap:9px}.v2-person{display:flex;align-items:center;gap:12px;background:#192c42;border:1px solid #334b61;padding:12px;border-radius:13px}.v2-personicon{background:#2b4660;border-radius:12px;font-size:24px;display:grid;place-items:center;width:43px;height:43px;flex:0 0 43px}.v2-personinfo{flex:1;min-width:0}.v2-personinfo>strong{font-size:13px;display:block}.v2-personinfo>strong span{font-weight:400;color:#a8c0d2;font-size:11px}.v2-personinfo small{display:block;color:#a7bdd3;font-size:10px;margin-top:5px}.v2-person .v2-meter{max-width:230px}
-.v2-skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.v2-skill{background:#1b2d45;padding:13px;border:1px solid #364961;border-radius:11px}.v2-skill>div:first-child{display:flex;justify-content:space-between;gap:7px;font-size:11px;color:#c1d7e1}.v2-skill strong{color:#7ae7c3}
-.v2-badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.v2-achievement{text-align:center;border-radius:12px;border:1px solid #34445a;background:#16253b;padding:16px 8px;opacity:.5}.v2-achievement.unlocked{background:#204047;border-color:#537977;opacity:1}.v2-achievement span{font-size:25px;display:block}.v2-achievement strong{font-size:11px;display:block;margin:8px 0 5px}.v2-achievement small{font-size:9px;color:#98b4c1;letter-spacing:.07em}
-@media(max-width:970px){.navbutton:hover{transform:none}}
-@media(max-width:740px){.v2-grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-badges{grid-template-columns:repeat(4,minmax(0,1fr))}.v2-spotlight{padding:15px}.v2-worldbar{font-size:10px}.v2-option{padding:10px}.v2-fact{padding:11px}.v2-chart svg{height:116px}.v2-spotlight h3{font-size:15px}.navbutton{font-size:9px}.navbutton .ico{font-size:17px}.topright{gap:6px}.topright .ghost{font-size:10px;padding:9px 8px}}
-@media(max-width:475px){.v2-cards,.v2-citygrid{grid-template-columns:1fr}.v2-badges{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-worldbar{align-items:flex-start}.v2-word{display:none}.v2-spotlight{align-items:flex-start}.v2-spotlight .smallbutton{font-size:10px}.v2-person{gap:7px;padding:10px}.v2-person .smallbutton{font-size:10px;padding:8px}.v2-personicon{width:35px;height:35px;flex-basis:35px;font-size:20px}}
-@media(prefers-reduced-motion:reduce){.navbutton,.action,.primary{transition:none!important}}
-
-</style>
-</head>
-<body>
-<div class="shell">
-  <header class="header"><div class="brand"><div class="mark">✦</div><div><h1>TRUE<span>LIFE</span></h1><small>REAL CHOICES. REAL CONSEQUENCES.</small></div></div><div class="topright"><span class="pill" id="saved-indicator">● Autosaved</span><button class="ghost" id="manage-life" type="button">☰ Saves</button><button class="ghost" id="newlife" type="button">↻ New life</button></div></header>
-  <div class="layout">
-    <aside class="sidebar" id="nav"></aside>
-    <main class="main">
-      <section class="hero"><div class="playerrow"><div class="avatar" id="avatar">🧑🏽</div><div class="playerinfo"><div class="eyebrow" id="chapter">CHAPTER 01 • THE BEGINNING</div><h2 id="playername">Your story</h2><p id="playerdesc">Every decision changes your future.</p></div></div><div class="herofigs"><div class="figure"><small>AGE</small><strong id="age">18</strong></div><div class="figure"><small>NET WORTH</small><strong id="networth" class="mint">$0</strong></div></div></section>
-      <section id="stats" class="stats"></section>
-      <div id="content"></div>
-      <div class="footer">TRUE LIFE · CHAPTER TWO · An original choice-driven life simulation · Saves locally on your device</div>
-    </main>
-  </div>
-</div>
-<div id="modalcontainer"></div><div class="toast" id="toast"></div>
-<script>
-(()=>{'use strict';
-let STORAGE='truelife-sim-v2-slot-1';
-const $=id=>document.getElementById(id);
-const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-const pick=a=>a[rand(0,a.length-1)];
-const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
-const cash=n=>(n<0?'−':'')+'$'+Math.abs(Math.round(n||0)).toLocaleString('en-US');
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const cities={"Atlanta, GA":1.03,"Birmingham, AL":0.87,"Chicago, IL":1.17,"Dallas, TX":1.04,"Houston, TX":1.03,"Los Angeles, CA":1.45,"New York, NY":1.59,"Miami, FL":1.27,"Detroit, MI":0.91,"Nashville, TN":1.09};
-const occupations=[
-{id:'retail',name:'Retail Associate',pay:30500,education:0,skill:0,icon:'🛒',blurb:'Entry-level retail job. Flexible but limited upward mobility.'},
-{id:'warehouse',name:'Warehouse Associate',pay:39000,education:0,skill:0,icon:'📦',blurb:'Steady hours, physically demanding work.'},
-{id:'food',name:'Restaurant Server',pay:33000,education:0,skill:0,icon:'🍽️',blurb:'Customer service and tips, variable hours.'},
-{id:'apprentice',name:'Trade Apprentice',pay:37000,education:0,skill:28,icon:'🔧',blurb:'Learn hands-on skills, earn while training.'},
-{id:'office',name:'Office Assistant',pay:35500,education:0,skill:45,icon:'🖥️',blurb:'Administrative work and experience.'},
-{id:'helpdesk',name:'IT Support Specialist',pay:52000,education:1,skill:52,icon:'💻',blurb:'Certification and problem solving required.'},
-{id:'electrician',name:'Licensed Electrician',pay:67000,education:1,skill:46,icon:'⚡',blurb:'Skilled trade with strong earning potential.'},
-{id:'nurse',name:'Registered Nurse',pay:78000,education:2,skill:60,icon:'🏥',blurb:'Clinical training and an associate or higher degree.'},
-{id:'teacher',name:'Teacher',pay:56500,education:3,skill:56,icon:'📚',blurb:'Bachelor degree required. Meaningful, demanding work.'},
-{id:'accountant',name:'Accountant',pay:73500,education:3,skill:62,icon:'🧮',blurb:'Business and analytical skills required.'},
-{id:'software',name:'Software Developer',pay:104000,education:3,skill:72,icon:'⌨️',blurb:'Strong technical skills and a bachelor degree.'},
-{id:'manager',name:'Operations Manager',pay:86500,education:2,skill:67,icon:'📊',blurb:'Leadership role. Prior work experience required.',exp:4},
-];
-const schools=[{id:'cert',name:'Professional Certification',length:1,cost:4900,level:1,boost:9,icon:'🛠️',desc:'Technical, trade, or IT certification.'},{id:'associate',name:'Associate Degree',length:2,cost:8200,level:2,boost:7,icon:'🎓',desc:'Community college degree.'},{id:'bachelor',name:'Bachelor Degree',length:4,cost:16800,level:3,boost:9,icon:'🏛️',desc:'Four-year university.'},{id:'master',name:'Master Degree',length:2,cost:23700,level:4,boost:9,icon:'📖',desc:'Graduate-level studies.'}];
-const dwellings=[{id:'family',name:'Live with Family',annual:2400,upfront:0,icon:'🏠',desc:'Contribute to household bills, low cost.'},{id:'roommates',name:'Roommate Apartment',annual:9800,upfront:1200,icon:'🛏️',desc:'Share the rent and utilities.'},{id:'studio',name:'Studio Apartment',annual:15500,upfront:2100,icon:'🏙️',desc:'Privacy comes at a price.'},{id:'nice',name:'Modern Apartment',annual:26600,upfront:3500,icon:'🌆',desc:'Higher rent and better lifestyle.'}];
-const statInfo=[['health','❤️','Health','#ff8d97'],['happiness','✨','Happiness','#ffca75'],['smarts','🧠','Knowledge','#83acff'],['social','🤝','Social','#c6a4ff'],['energy','⚡','Energy','#67e1c2'],['stress','🌧️','Stress','#fc98a1']];
-const people=['Jordan','Taylor','Alex','Avery','Morgan','Riley','Cameron','Sam','Parker','Casey','Quinn','Drew'];
-let state=null, tab='home', popup=null, toastTimer=null;
-function fresh(name='Alex Morgan',city='Birmingham, AL',origin='working',fromBirth=false){
- const starts={working:{wealth:2700,smarts:57,health:83,social:49,happiness:67,stress:22},stable:{wealth:7000,smarts:65,health:88,social:54,happiness:74,stress:14},difficult:{wealth:480,smarts:48,health:75,social:43,happiness:58,stress:33}};
- let b=starts[origin]||starts.working;
- return {name,city,origin,age:fromBirth?0:18,year:2026,wealth:fromBirth?0:b.wealth,debt:0,invested:0,credit:680,health:b.health,happiness:b.happiness,smarts:b.smarts,social:b.social,energy:75,stress:b.stress,fitness:51,education:fromBirth?-1:0,school:null,job:null,jobExp:0,experience:0,employedPay:0,housing:'family',car:false,partner:null,partnerScore:0,kids:0,friendScore:42,actions:3,sideIncome:0,gameover:false,pendingEvent:null,log:[{age:fromBirth?0:18,year:2026,icon:'🌱',text:fromBirth?'You were born. Your story begins.':'You stepped into adulthood. Your future is unwritten.'}],totalEarned:0,yearsLived:0,extraChance:0,loanDefault:false};
-}
-function save(){try{localStorage.setItem(STORAGE,JSON.stringify(state));$('saved-indicator').textContent='● Autosaved'}catch(e){$('saved-indicator').textContent='◌ Local save unavailable'}}
-function load(){try{let o=JSON.parse(localStorage.getItem(STORAGE));if(o&&typeof o.age==='number'&&typeof o.wealth==='number'&&typeof o.name==='string')return o}catch(e){}return null}
-function log(text,icon='📝'){state.log.unshift({age:state.age,year:state.year,text,icon});state.log=state.log.slice(0,300)}
-function change(obj){for(const [k,v] of Object.entries(obj)){if(['health','happiness','smarts','social','energy','stress','fitness','friendScore','partnerScore'].includes(k))state[k]=clamp((state[k]||0)+v);else state[k]=(state[k]||0)+v}}
-function toast(msg){const e=$('toast');e.textContent=msg;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2600)}
-function setTab(t){tab=t;render();window.scrollTo({top:0,behavior:'smooth'})}
-function occupation(){return occupations.find(j=>j.id===state.job)}
-function salary(){const j=occupation();if(!j)return 0;const expMultiplier=1+Math.min(state.jobExp,12)*.035;return Math.round(j.pay*expMultiplier*(cities[state.city]||1))}
-function annualExpenses(){let factor=cities[state.city]||1;let house=dwellings.find(x=>x.id===state.housing)||dwellings[0];let food=state.age<18?0:state.housing==='family'?3700:8900;return Math.round((house.annual+food+(state.car?4100:2300))*factor+(state.kids*5100));}
-function net(){return state.wealth+state.invested-state.debt}
-function activeSchool(){return schools.find(s=>state.school&&s.id===state.school.id)}
-function stage(){return state.age<6?'Early Childhood':state.age<13?'School Days':state.age<18?'Teenage Years':state.age<30?'Finding Your Way':state.age<45?'Building a Life':state.age<60?'Midlife':state.age<75?'Later Chapters':'The Golden Years'}
-function actionCount(){return state.actions===1?'1 action':`${state.actions} actions`}
-function render(){if(!state)return;
- $('playername').textContent=state.name; $('chapter').textContent=`${stage().toUpperCase()} • YEAR ${state.year}`;
- $('playerdesc').textContent=`📍 ${state.city}  ·  ${state.age<18?'Growing up':occupation()?.name||'Currently unemployed'}  ·  ${state.age<18?'Living with family':(dwellings.find(x=>x.id===state.housing)||dwellings[0]).name}`;
- $('age').textContent=state.age; $('networth').textContent=cash(net());$('networth').style.color=net()<0?'var(--red)':'var(--accent)';
- $('avatar').textContent=state.age<4?'👶🏽':state.age<13?'🧒🏽':state.age<60?'🧑🏽':'🧓🏽';
- $('nav').innerHTML=[['home','⌂','Home'],['career','💼','Career'],['money','💳','Finances'],['social','💞','People'],['story','📖','Life story']].map(([id,ico,label])=>`<button class="navbutton ${tab===id?'active':''}" data-tab="${id}" type="button"><span class="ico">${ico}</span>${label}</button>`).join('')+`<div class="sidetip"><div class="eyebrow">THE REALITY CHECK</div><p>Every year brings income, bills, new opportunities and unexpected setbacks. Plan ahead.</p></div>`;
- $('stats').innerHTML=statInfo.map(([key,ico,label,color])=>`<div class="stat"><div class="statlabel"><span>${ico} ${label}</span><em>${Math.round(state[key]||0)}${key==='stress'?'':'%'}</em></div><div class="bar"><i style="width:${clamp(state[key]||0)}%;background:${color}"></i></div></div>`).join('');
- $('content').innerHTML=state.gameover?renderEnding():tab==='home'?renderHome():tab==='career'?renderCareer():tab==='money'?renderMoney():tab==='social'?renderSocial():renderStory();
- document.querySelectorAll('[data-tab]').forEach(x=>x.onclick=()=>setTab(x.dataset.tab));
- document.querySelectorAll('[data-action]').forEach(x=>x.onclick=()=>act(x.dataset.action));
- document.querySelectorAll('[data-job]').forEach(x=>x.onclick=()=>applyJob(x.dataset.job));
- document.querySelectorAll('[data-school]').forEach(x=>x.onclick=()=>enroll(x.dataset.school));
- document.querySelectorAll('[data-home]').forEach(x=>x.onclick=()=>move(x.dataset.home));
- save();
-}
-function actionButton(id,icon,title,sub,disabled=false){return `<button type="button" class="action" data-action="${id}" ${disabled?'disabled':''}><span class="actionico">${icon}</span><span><strong>${title}</strong><small>${sub}</small></span></button>`}
-function feed(limit=6){return `<div class="feed">${state.log.slice(0,limit).map(e=>`<div class="entry"><div class="feedico">${e.icon}</div><div><p>${esc(e.text)}</p><small>AGE ${e.age} · ${e.year}</small></div></div>`).join('')}</div>`}
-function ageFooter(){return `<div class="bottomrow"><div><h3>Ready for the next chapter?</h3><p>${actionCount()} remaining this year · Advancing processes finances, education and life events.</p></div><button class="primary" data-action="age">Age up →</button></div>`}
-function renderHome(){const a=state.actions<=0;
- return `${ageFooter()}<div class="two"><div><section class="panel"><div class="paneltitle"><h3>What will you do?</h3><span>${actionCount()} left this year</span></div><p class="intro">Your time is limited. Each action can improve a part of your life, but choices have tradeoffs.</p><div class="actiongrid">${state.age>=16?actionButton('sidegig','💵','Pick up side work',state.age<18?'Earn around $150':'Earn around $550',a):actionButton('play','🧩','Play & explore','Happiness + social',a)}${actionButton('study','📚',state.age<18?'Focus on school':'Learn new skills','Knowledge and career preparation',a)}${actionButton('gym','🏋️',state.age<10?'Play outside':'Exercise','Health + fitness · small cost',a)}${actionButton('friends','🫶',state.age<13?'Make friends':'Spend time with friends','Social + happiness · $45',a)}${actionButton('rest','🛌','Take care of yourself','More energy, less stress',a)}${state.age>=16?actionButton('therapy','🩺','See a counselor','Less stress · $180',a):actionButton('family','🏡','Spend family time','Support and happiness',a)}</div></section><section class="panel"><div class="paneltitle"><h3>Your situation</h3><span>Current snapshot</span></div><div class="details"><div class="detail"><label>Current job</label><strong>${esc(occupation()?.name||'None')}</strong></div><div class="detail"><label>Education</label><strong>${educationName()}</strong></div><div class="detail"><label>Housing</label><strong>${state.age<18?'Family home':esc((dwellings.find(x=>x.id===state.housing)||dwellings[0]).name)}</strong></div><div class="detail"><label>Relationships</label><strong>${state.partner?esc(state.partner):'Single'}${state.kids?' · '+state.kids+' children':''}</strong></div></div></section></div><div><section class="panel"><div class="paneltitle"><h3>Latest moments</h3><span>Your timeline</span></div>${feed(7)}<button class="smallbutton" data-action="seeStory" style="margin-top:16px">View full life story →</button></section><section class="panel"><div class="paneltitle"><h3>Next year forecast</h3><span>Estimate</span></div><div class="details"><div class="detail"><label>Gross salary</label><strong class="mint">${cash(salary())}</strong></div><div class="detail"><label>Living costs</label><strong class="gold">${state.age<18?'Covered by family':cash(annualExpenses())}</strong></div><div class="detail"><label>Student program</label><strong>${esc(activeSchool()?.name||'Not enrolled')}</strong></div><div class="detail"><label>Debt balance</label><strong class="${state.debt>0?'red':'mint'}">${cash(state.debt)}</strong></div></div></section></div></div>`;
-}
-function educationName(){return state.education<0?'Not started':(['High school','Certificate','Associate degree','Bachelor degree','Master degree'][state.education]||'High school')}
-function renderCareer(){let eligible=state.age>=18;
- return `${ageFooter()}<section class="panel"><div class="paneltitle"><h3>Your career path</h3><span>Experience ${state.experience} yrs</span></div><div class="moneygrid"><div class="moneybox"><small>Current role</small><strong style="font-size:14px">${esc(occupation()?.name||'Unemployed')}</strong></div><div class="moneybox"><small>Annual pay</small><strong class="mint">${cash(salary())}</strong></div><div class="moneybox"><small>Education</small><strong style="font-size:14px">${educationName()}</strong></div></div>${state.school?`<div class="listcard"><div><h4>🎓 ${esc(activeSchool()?.name||'College')}</h4><p>Year ${state.school.years+1} of ${activeSchool()?.length||1} · Tuition billed yearly · Study to improve outcomes</p></div><span class="chip">ENROLLED</span></div>`:''}<p class="footnote">Work experience raises annual pay by about 3.5% per year in the same job, up to a cap. Changing jobs resets role tenure.</p></section><section class="panel"><div class="paneltitle"><h3>Job opportunities</h3><span>Apply to change roles</span></div><div class="cardlist">${occupations.map(j=>{let allowed=eligible&&(state.age>=18||['retail','food'].includes(j.id))&&state.education>=j.education&&state.smarts>=j.skill&&(!j.exp||state.experience>=j.exp);let missing=[];if(state.age<18&&!['retail','food'].includes(j.id))missing.push('Age 18+');if(state.education<j.education)missing.push(['High school','Certification','Associate degree','Bachelor degree'][j.education]||'Degree');if(state.smarts<j.skill)missing.push('Knowledge '+j.skill);if(j.exp&&state.experience<j.exp)missing.push(j.exp+' yrs work experience');return `<div class="listcard"><div><h4>${j.icon} ${j.name}</h4><p>${j.blurb}</p><div style="margin-top:9px"><span class="chip">${missing.length?'Requires: '+missing.join(' · '):'Qualifications met'}</span></div></div><div class="right"><div class="cost">${cash(j.pay*(cities[state.city]||1))}/yr</div><button class="smallbutton" data-job="${j.id}" ${!allowed||state.job===j.id?'disabled':''}>${state.job===j.id?'Current':'Apply'}</button></div></div>`}).join('')}</div></section><section class="panel"><div class="paneltitle"><h3>Education & training</h3><span>Investment in your future</span></div><div class="cardlist">${schools.map(s=>{let requirement=s.level===4?state.education>=3:s.level===3?state.education>=0:s.level===2?state.education>=0:true;let allowed=state.age>=17&&requirement&&state.education<s.level&&!state.school;return `<div class="listcard"><div><h4>${s.icon} ${s.name}</h4><p>${s.desc} · ${s.length} ${s.length===1?'year':'years'}</p></div><div class="right"><div class="cost neg">${cash(s.cost)}/yr</div><button class="smallbutton" data-school="${s.id}" ${allowed?'':'disabled'}>Enroll</button></div></div>`}).join('')}</div><p class="footnote">Tuition is paid each year from cash or student loans. School adds stress and can limit work-life balance.</p></section>`;
-}
-function renderMoney(){let annual=annualExpenses(),salaryPay=salary(),tax=Math.round(salaryPay*taxRate(salaryPay));return `${ageFooter()}<section class="panel"><div class="paneltitle"><h3>Personal finances</h3><span>Your money is real</span></div><div class="moneygrid"><div class="moneybox"><small>Cash savings</small><strong class="mint">${cash(state.wealth)}</strong></div><div class="moneybox"><small>Total debt</small><strong class="${state.debt?'red':'mint'}">${cash(state.debt)}</strong></div><div class="moneybox"><small>Investments</small><strong>${cash(state.invested)}</strong></div></div><div class="details"><div class="detail"><label>Estimated take-home pay / yr</label><strong class="mint">${cash(salaryPay-tax)}</strong></div><div class="detail"><label>Annual living costs</label><strong>${state.age<18?'Family supported':cash(annual)}</strong></div><div class="detail"><label>Credit score</label><strong>${state.credit} / 850</strong></div><div class="detail"><label>Estimated net worth</label><strong class="${net()<0?'red':'mint'}">${cash(net())}</strong></div></div><p class="footnote">Estimates are simplified and vary by fictional in-game events. Income tax, expenses, debt interest and investment returns are calculated when you age up.</p></section><section class="panel"><div class="paneltitle"><h3>Manage your money</h3><span>${actionCount()} available</span></div><div class="actiongrid">${actionButton('payDebt','🧾','Pay down debt',`Debt: ${cash(state.debt)}`,state.age<18||state.debt<=0||state.wealth<=0)}${actionButton('invest','📈','Invest savings',`Invested: ${cash(state.invested)}`,state.age<18||state.wealth<500)}${actionButton('withdraw','🏧','Sell investments',`Cash out market assets`,state.invested<=0)}${actionButton('doctor','🩺','Doctor visit','Improve health · $260',state.age<18||state.wealth<260||state.actions<=0)}</div></section><section class="panel"><div class="paneltitle"><h3>Where you live</h3><span>Annual housing expenses</span></div><div class="cardlist">${dwellings.filter(d=>d.id!=='owned').map(d=>`<div class="listcard"><div><h4>${d.icon} ${d.name}</h4><p>${d.desc} · Move-in ${cash(d.upfront*(cities[state.city]||1))}</p></div><div class="right"><div class="cost neg">${cash(d.annual*(cities[state.city]||1))}/yr</div><button class="smallbutton" data-home="${d.id}" ${state.age<18||state.housing===d.id?'disabled':''}>${state.housing===d.id?'Current':'Move'}</button></div></div>`).join('')}</div></section><section class="panel"><div class="paneltitle"><h3>Transportation</h3></div><div class="listcard"><div><h4>🚙 ${state.car?'Used car — owned':'Buy a used car'}</h4><p>${state.car?'Fuel, repairs and insurance are included in living costs.':'A reliable used car for $7,200, plus about $4,100/year for fuel, insurance, and upkeep.'}</p></div><button class="smallbutton" data-action="car" ${state.car||state.age<18?'disabled':''}>${state.car?'Owned':'Buy'}</button></div></section>`}
-function renderSocial(){return `${ageFooter()}<section class="panel"><div class="paneltitle"><h3>Your circle</h3><span>Connections take effort</span></div><div class="moneygrid"><div class="moneybox"><small>Friendship strength</small><strong>${Math.round(state.friendScore)}%</strong></div><div class="moneybox"><small>Relationship</small><strong style="font-size:15px">${state.partner?esc(state.partner):'Single'}</strong></div><div class="moneybox"><small>Children</small><strong>${state.kids}</strong></div></div><div class="actiongrid">${actionButton('friends','🎉','Hang out with friends','Maintain your social circle · $45',state.actions<=0)}${actionButton('date','💬',state.partner?'Date night':'Meet someone new',state.partner?'Build your relationship · $120':'Chance to meet a partner · $65',state.age<18||state.actions<=0)}${actionButton('partner','💗','Spend quality time','Grow your connection · $85',!state.partner||state.actions<=0)}${actionButton('marry','💍','Get married','Commit to your partner · $2,000',!state.partner||!!state.married||state.partnerScore<68||state.wealth<2000||state.age<18)}${actionButton('baby','👶','Plan for a child','A long-term family commitment',!state.partner||state.age<18||state.age>53||state.actions<=0)}${actionButton('family','🏡','Visit your family','Improve happiness & support',state.actions<=0)}</div></section><section class="panel"><div class="paneltitle"><h3>Relationships</h3></div>${state.partner?`<div class="listcard"><div><h4>💗 ${esc(state.partner)}</h4><p>${state.married?'Married':'Dating'} · Relationship quality ${Math.round(state.partnerScore)}%</p></div><span class="chip">${state.married?'SPOUSE':'PARTNER'}</span></div><p class="footnote">Relationships change as time passes. If they're neglected, people may drift apart.</p>`:`<div class="empty">You're single. Meet people, build friendships, and see where things go.</div>`}${state.kids?`<div class="listcard" style="margin-top:10px"><div><h4>🧸 Your family</h4><p>${state.kids} ${state.kids===1?'child':'children'} · Parenting adds expenses and happiness.</p></div></div>`:''}</section>`}
-function renderStory(){let milestones=state.log.length;return `${ageFooter()}<section class="panel"><div class="paneltitle"><h3>The life of ${esc(state.name)}</h3><span>${milestones} moments</span></div><p class="explain">From the choices you made to the opportunities you missed, this is the story of your life.</p>${feed(80)}</section>`}
-function renderEnding(){return `<section class="panel" style="text-align:center;padding:40px 28px"><div style="font-size:65px">🕊️</div><div class="eyebrow" style="margin-top:22px">A LIFE WELL LIVED</div><h2 style="font-size:31px;margin:13px 0 8px">The story of ${esc(state.name)}</h2><p class="explain">Your life ended at age ${state.age}. The decisions you made shaped a story that was entirely yours.</p><div class="moneygrid"><div class="moneybox"><small>Final net worth</small><strong>${cash(net())}</strong></div><div class="moneybox"><small>Lifetime earnings</small><strong>${cash(state.totalEarned)}</strong></div><div class="moneybox"><small>Children</small><strong>${state.kids}</strong></div></div><button class="primary" data-action="newgame">Start another life ↻</button></section><section class="panel"><div class="paneltitle"><h3>Your complete story</h3></div>${feed(80)}</section>`}
-function taxRate(pay){return pay<=35000?.14:pay<=60000?.19:pay<=105000?.24:.29}
-function needsAction(){if(state.actions<=0){toast('No actions left this year. Age up to continue.');return false}return true}
-function useAction(){state.actions=Math.max(0,state.actions-1)}
-function spend(n){if(state.wealth<n){toast(`You need ${cash(n)} in available cash.`);return false}state.wealth-=n;return true}
-function doSimple(id){if(!needsAction())return;
- if(id==='study'){change({smarts:rand(5,10),energy:-7,stress:rand(2,6),happiness:-2});if(state.school)state.school.studied=(state.school.studied||0)+1;log('You spent time studying and building your knowledge.','📚');}
- if(id==='gym'){if(state.age>=10&&!spend(45))return;change({health:rand(4,8),fitness:rand(6,10),energy:-9,stress:-5,happiness:2});log('You made your physical health a priority.','🏋️');}
- if(id==='friends'){if(state.age>=18&&!spend(45))return;change({social:rand(6,10),happiness:7,friendScore:8,stress:-4,energy:-4});log('You made memories with friends.','🫶');}
- if(id==='rest'){change({health:3,energy:18,stress:-13,happiness:3});log('You slowed down and gave yourself time to recover.','🛌');}
- if(id==='therapy'){if(!spend(180))return;change({stress:-19,happiness:8,health:4});log('You spoke to a counselor and worked through some stress.','🩺');}
- if(id==='doctor'){if(!spend(260))return;change({health:rand(9,15),stress:-3});log('You visited the doctor for a health check.','🩺');}
- if(id==='family'){change({social:4,happiness:rand(6,10),stress:-4,friendScore:2});log('You spent meaningful time with family.','🏡');}
- if(id==='play'){change({happiness:11,social:4,health:3,energy:-5});log('You explored, played and learned about the world.','🧩');}
- if(id==='sidegig'){let earned=state.age<18?rand(90,260):rand(280,670);state.wealth+=earned;state.sideIncome+=earned;change({energy:-13,stress:5,happiness:-2});log(`You worked a side gig and made ${cash(earned)}.`, '💵');}
- useAction();render();}
-function applyJob(id){const j=occupations.find(j=>j.id===id);if(!j||state.gameover)return;
- if(state.age<16||(state.age<18&&!['retail','food'].includes(j.id))||state.education<j.education||state.smarts<j.skill||(j.exp&&state.experience<j.exp)){toast('You do not meet the requirements yet.');return}
- if(state.job===id)return;
- if(state.age<18){toast('You can start working full-time at 18. Use side gigs until then.');return}
- let chance=.86; if(j.pay>75000)chance=.68;if(state.smarts>=j.skill+10)chance+=.08;
- if(Math.random()>chance){change({stress:4});log(`You applied for ${j.name}, but the employer chose someone else.`,'📨');toast('Application rejected. You can try again.');render();return}
- state.job=id;state.jobExp=0;change({happiness:6,stress:4});log(`You got hired as a ${j.name}! Starting salary: ${cash(salary())} per year.`,'💼');toast(`Hired! ${j.name}`);render();}
-function enroll(id){let s=schools.find(s=>s.id===id);if(!s||state.age<17||state.school||state.education>=s.level||(s.level===4&&state.education<3))return;
- openConfirm(`Study ${s.name}?`,`This program takes ${s.length} ${s.length===1?'year':'years'} and costs around ${cash(s.cost)} per year. Tuition becomes student debt when you can't pay.`,()=>{state.school={id,years:0,studied:0};log(`You enrolled in ${s.name}.`, '🎓');render();},'Enroll now');}
-function move(id){const d=dwellings.find(d=>d.id===id);if(!d||state.age<18||state.housing===id)return;let cost=Math.round(d.upfront*(cities[state.city]||1));if(state.wealth<cost){toast('Not enough savings for move-in costs.');return}
- openConfirm(`Move to ${d.name}?`,`Moving costs ${cash(cost)} now, and annual rent/household expenses will change.`,()=>{if(!spend(cost))return;state.housing=id;change({happiness:d.id==='nice'?9:4,stress:3});log(`You moved to ${d.name} and paid ${cash(cost)} in move-in costs.`,'🏠');render()},'Move in');}
-function act(id){if(state.gameover&&id!=='newgame')return;
- if(id==='newgame'){newGamePrompt();return}if(id==='age'){ageUp();return}
- if(id==='seeStory'){setTab('story');return}
- if(['study','gym','friends','rest','therapy','doctor','family','play','sidegig'].includes(id)){doSimple(id);return}
- if(id==='payDebt'){if(state.debt<=0||state.wealth<=0)return;moneyChoice('Pay down your debt','Reducing loan principal cuts future interest.',[500,1500,5000,Math.min(state.wealth,state.debt)].filter((x,i,a)=>x>0&&a.indexOf(x)===i).map(v=>({label:`Pay ${cash(Math.min(v,state.debt,state.wealth))}`,value:Math.min(v,state.debt,state.wealth)})),v=>{state.wealth-=v;state.debt=Math.max(0,state.debt-v);state.credit=clamp(state.credit+5,300,850);log(`You paid ${cash(v)} toward your debt.`,'🧾');render()});return}
- if(id==='invest'){let amt=[500,2000,10000].filter(v=>v<=state.wealth);if(!amt.length)return;moneyChoice('Invest in a diversified fund','Market returns can go up or down each year. Only invest money you can afford to leave untouched.',amt.map(v=>({label:`Invest ${cash(v)}`,value:v})),v=>{state.wealth-=v;state.invested+=v;log(`You invested ${cash(v)} in the market.`,'📈');render()});return}
- if(id==='withdraw'){if(state.invested<=0)return;let amt=[500,2000,state.invested].map(v=>Math.min(v,state.invested)).filter((v,i,a)=>v>0&&a.indexOf(v)===i);moneyChoice('Sell investments','You can transfer invested money back to your cash balance.',amt.map(v=>({label:`Withdraw ${cash(v)}`,value:v})),v=>{state.invested-=v;state.wealth+=v;log(`You withdrew ${cash(v)} from your investments.`,'🏧');render()});return}
- if(id==='car'){if(state.car||state.age<18)return;openConfirm('Buy a used car?','You need $7,200 in savings. Fuel, insurance and maintenance raise annual expenses, but you will have your own transportation.',()=>{if(!spend(7200))return;state.car=true;change({happiness:8});log('You bought your first car for $7,200.','🚙');render()},'Buy for $7,200');return}
- if(id==='date'){if(state.age<18||!needsAction())return;const expense=state.partner?120:65;if(!spend(expense))return;useAction();if(state.partner){change({partnerScore:13,happiness:8,energy:-5});log(`You went on a date with ${state.partner}.`,'💕');}else{if(Math.random()<.83){let p=pick(people);state.partner=p;state.partnerScore=rand(45,68);change({happiness:11,social:6});log(`You met ${p}, and you both agreed to start dating.`,'💞');toast(`You met ${p}!`)}else{change({social:4,happiness:-2});log('You went on a date, but there was no spark.','💬')}}render();return}
- if(id==='partner'){if(!state.partner||!needsAction())return;if(!spend(85))return;useAction();change({partnerScore:rand(9,16),happiness:6,stress:-4});log(`You made time for your relationship with ${state.partner}.`,'💗');render();return}
- if(id==='marry'){if(!state.partner||state.partnerScore<68||state.married)return;openConfirm('Get married?',`You and ${state.partner} have discussed marriage. A simple wedding costs $2,000 and is a serious commitment.`,()=>{if(!spend(2000))return;state.married=true;change({happiness:15,partnerScore:13});log(`You and ${state.partner} got married!`,'💍');render()},'Say I do');return}
- if(id==='baby'){if(!state.partner||state.age>53||state.age<18||!needsAction())return;openConfirm('Plan for a child?',"Parenting changes everything. Each child adds an estimated $5,100 in annual costs and requires emotional energy.",()=>{useAction();state.kids+=1;change({happiness:14,energy:-13,stress:11,partnerScore:3});log(`You welcomed child #${state.kids} into your family!`,'👶');render()},'Grow your family');return}
-}
-function moneyChoice(title,desc,options,onSelect){popup={type:'options',title,desc,options,onSelect};showPopup()}
-function openConfirm(title,desc,yes,label='Continue'){popup={type:'confirm',title,desc,yes,label};showPopup()}
-function showPopup(){let box=$('modalcontainer');if(!popup){box.innerHTML='';return}
- if(popup.type==='start'){
- box.innerHTML=`<div class="overlay"><div class="modal"><div class="modalvisual">🌍</div><div class="eventbadge">CREATE YOUR STORY</div><h2>One life. A thousand possibilities.</h2><p>Start with your own character and see how far your choices can take you. Your decisions will have real tradeoffs.</p><div class="formrow"><label for="charname">Character name</label><input id="charname" maxlength="32" value="Alex Morgan" placeholder="Your character's name" /></div><div class="formrow"><label for="citychoice">City</label><select id="citychoice">${Object.keys(cities).map(c=>`<option value="${esc(c)}" ${c==='Birmingham, AL'?'selected':''}>${esc(c)}</option>`).join('')}</select></div><div class="formrow"><label for="background">Family background</label><select id="background"><option value="working">Working class — modest savings</option><option value="stable">Stable upbringing — better head start</option><option value="difficult">Difficult beginnings — harder challenge</option></select></div><div class="formrow"><label for="startage">Starting age</label><select id="startage"><option value="18">18 years old — jump into adult life</option><option value="0">Birth — experience childhood</option></select></div><button class="primary wide" id="beginlife">Begin my life →</button></div></div>`;
- $('beginlife').onclick=()=>{const nm=$('charname').value.trim().slice(0,32)||'Alex Morgan';state=fresh(nm,$('citychoice').value,$('background').value,$('startage').value==='0');tab='home';popup=null;showPopup();render()};return;
- }
- if(popup.type==='event'){let ev=events[popup.eventId];if(!ev){popup=null;showPopup();return}
- box.innerHTML=`<div class="overlay"><div class="modal"><div class="modalvisual">${ev.icon}</div><div class="eventbadge">LIFE EVENT · AGE ${state.age}</div><h2>${esc(ev.title)}</h2><p>${esc(typeof ev.text==='function'?ev.text():ev.text)}</p>${ev.choices.map((c,i)=>`<button class="choice" data-option="${i}"><strong>${esc(c.text)}</strong><small>${esc(c.sub)}</small></button>`).join('')}</div></div>`;
- box.querySelectorAll('[data-option]').forEach(n=>n.onclick=()=>{let idx=Number(n.dataset.option);const text=ev.choices[idx].result();if(text)log(text,ev.icon);state.pendingEvent=null;popup=null;showPopup();render();toast('Your choice has consequences.');});return;
- }
- if(popup.type==='confirm'){
- box.innerHTML=`<div class="overlay"><div class="modal"><div class="eventbadge">A MEANINGFUL DECISION</div><h2>${esc(popup.title)}</h2><p>${esc(popup.desc)}</p><div class="modalbuttons"><button class="ghost" id="cancelModal">Cancel</button><button class="primary" id="yesModal">${esc(popup.label)}</button></div></div></div>`;
- $('cancelModal').onclick=()=>{popup=null;showPopup()};$('yesModal').onclick=()=>{let f=popup.yes;popup=null;showPopup();f()};return;
- }
- if(popup.type==='options'){
- box.innerHTML=`<div class="overlay"><div class="modal"><div class="eventbadge">MONEY DECISION</div><h2>${esc(popup.title)}</h2><p>${esc(popup.desc)}</p>${popup.options.map((o,i)=>`<button class="choice" data-opt="${i}"><strong>${esc(o.label)}</strong></button>`).join('')}<div class="modalbuttons"><button class="ghost" id="cancelModal">Cancel</button></div></div></div>`;
- box.querySelectorAll('[data-opt]').forEach(n=>n.onclick=()=>{let val=popup.options[Number(n.dataset.opt)].value;const f=popup.onSelect;popup=null;showPopup();f(val)});$('cancelModal').onclick=()=>{popup=null;showPopup()};return;
- }
-}
-function newGamePrompt(){openConfirm('Start a new life?','This replaces your current saved life on this device. Your current story will be lost.',()=>{popup={type:'start'};showPopup()},'Start new life')}
-function agingConditions(){change({energy:10});if(state.age>35)change({health:-rand(0,2)});if(state.age>55)change({health:-rand(1,4)});if(state.age>75)change({health:-rand(0,5)});if(state.stress>70)change({health:-rand(1,5),happiness:-2});if(state.energy<25)change({stress:4,health:-2});if(state.health<30)change({happiness:-4});}
-function processYear(){let notes=[];if(state.age<=18){if(state.age===6){state.education=-1;notes.push('You started elementary school.')}if(state.age===13)notes.push('You entered your teenage years.');if(state.age===18){state.education=0;state.wealth+=state.origin==='stable'?7000:state.origin==='difficult'?480:2700;notes.push('You graduated high school and turned 18. Adult life begins!')}return notes}
- let gross=salary();if(gross>0){state.totalEarned+=gross;state.jobExp++;state.experience++;change({stress:state.job==='warehouse'||state.job==='nurse'?7:4,energy:-8});if(state.jobExp===4)notes.push('Your experience helped you establish yourself at work.')}else{change({happiness:-3,stress:5});}
- let taxes=Math.round(gross*taxRate(gross));let expenses=annualExpenses();let studentTuition=0;let sch=activeSchool();if(sch&&state.school){studentTuition=Math.round(sch.cost*(cities[state.city]||1));state.school.years++;change({stress:6,smarts:rand(3,6),energy:-6});if(state.school.years>=sch.length){let passing=state.smarts>=37||state.school.studied>=1;if(passing){state.education=Math.max(state.education,sch.level);change({smarts:sch.boost,happiness:12});notes.push(`You completed your ${sch.name}!`)}else{change({happiness:-8,stress:8});notes.push(`You struggled in ${sch.name} and did not earn the qualification.`)}state.school=null}}
- let earnings=gross-taxes;
- state.wealth+=earnings;state.wealth-=expenses;
- if(state.wealth<0){let gap=Math.abs(state.wealth);state.wealth=0;state.debt+=Math.ceil(gap*1.06);change({stress:15,happiness:-10});state.credit=clamp(state.credit-35,300,850);notes.push(`Your expenses exceeded income. You had to borrow ${cash(gap)}.`)}
- if(studentTuition){if(state.wealth>=studentTuition)state.wealth-=studentTuition;else{let borrowing=studentTuition-Math.max(0,state.wealth);state.wealth=Math.max(0,state.wealth-studentTuition);state.debt+=borrowing;notes.push(`Student loans covered ${cash(borrowing)} of your tuition.`)}}
- if(state.debt>0){let interest=Math.round(state.debt*.055);state.debt+=interest;let minPay=Math.min(state.debt,Math.max(250,Math.round(state.debt*.035)));if(state.wealth>=minPay){state.wealth-=minPay;state.debt-=minPay;state.credit=clamp(state.credit+3,300,850)}else{state.credit=clamp(state.credit-22,300,850);change({stress:10});state.loanDefault=true;notes.push('You missed a loan payment and your credit score dropped.')}}
- if(state.invested>0){let returnRate=rand(-12,16)/100;let gain=Math.round(state.invested*returnRate);state.invested=Math.max(0,state.invested+gain);notes.push(`Investments ${gain>=0?'gained':'lost'} ${cash(Math.abs(gain))} this year.`)}
- if(state.partner){state.partnerScore=clamp(state.partnerScore-rand(4,9));if(state.partnerScore<14){notes.push(`${state.partner} ended the relationship after a difficult year.`);state.partner=null;state.married=false;change({happiness:-16,stress:15})}}
- state.friendScore=clamp(state.friendScore-rand(1,5));if(state.friendScore<25)change({social:-3});
- if(state.kids)change({happiness:2,energy:-4,stress:2});
- if(gross)notes.unshift(`Earned ${cash(gross)} before ${cash(taxes)} in estimated income tax; living costs ${cash(expenses)}.`);else notes.unshift(`Paid ${cash(expenses)} in living expenses with no salary income.`);
- return notes;
-}
-function ageUp(){if(state.gameover||popup)return;state.age++;state.year++;let notes=processYear();agingConditions();state.actions=3;state.sideIncome=0;for(let s of notes)log(s,s.includes('loan')||s.includes('borrow')?'🧾':s.includes('complete')?'🎓':'📅');log(`You turned ${state.age}. Another year, another set of choices.`,'🎂');
- if(state.age>=62){let risk=state.age>=90?.18:state.age>=85?.075:state.age>=75?.028:.004;risk+=(100-state.health)*.0008;if(Math.random()<risk){state.gameover=true;log(`Your life came to an end at ${state.age}.`,'🕊️');render();return}}
- if(state.health<=2&&state.age>30&&Math.random()<.12){state.gameover=true;log('Your health deteriorated severely, and your life came to an end.','🕊️');render();return}
- let id=chooseEvent();if(id){state.pendingEvent=id;popup={type:'event',eventId:id};}render();if(popup)showPopup();}
-const events={
- raise:{icon:'💼',title:'Ask for a raise?',text:()=>`You've been working as a ${occupation()?.name||'professional'} for a while. You believe your work deserves better compensation.`,choices:[{text:'Negotiate professionally',sub:'A good chance at a small salary boost, but not guaranteed.',result:()=>{if(Math.random()<.66){state.jobExp+=2;change({happiness:7,stress:-2});return 'You negotiated a raise based on your experience.'}change({stress:5});return 'Your manager turned down your request for a raise.'}},{text:'Keep your head down',sub:'Avoid conflict, but your pay stays the same.',result:()=>{change({stress:-4});return 'You decided not to ask for a raise this year.'}}]},
- repairs:{icon:'🚗',title:'An expensive surprise',text:'Your vehicle needs repairs after breaking down at the worst time.',choices:[{text:'Pay for a proper repair',sub:'$850 upfront. Lower stress once the issue is fixed.',result:()=>{if(state.wealth>=850){state.wealth-=850;change({stress:-3});return 'You paid $850 for vehicle repairs.'}state.debt+=850;change({stress:8});return 'You financed an $850 car repair.'}},{text:'Put it off and keep driving',sub:'Risk your safety and an even bigger bill.',result:()=>{if(Math.random()<.48){state.debt+=1600;change({stress:12,health:-6});return 'The car broke down again. It cost $1,600 more to fix.'}change({stress:5});return 'You delayed repairs, hoping your car holds up.'}}]},
- roommate:{icon:'🏘️',title:'A housing opportunity',text:'A friend offers to split a place with you. You could save money, but you would give up some privacy.',choices:[{text:'Move in with a roommate',sub:'Move-in cost $600; yearly housing costs change.',result:()=>{state.housing='roommates';if(state.wealth>=600)state.wealth-=600;else state.debt+=600;change({happiness:4,social:5});return 'You moved into a shared apartment.'}},{text:'Stay where you are',sub:'Choose stability.',result:()=>{change({stress:-3});return 'You decided to stay in your current home.'}}]},
- offer:{icon:'📨',title:'A risky opportunity',text:'Someone has offered you contract work on the side. The pay is attractive, but it will stretch your schedule.',choices:[{text:'Take the contract',sub:'Earn $1,900, lose energy and increase stress.',result:()=>{state.wealth+=1900;change({energy:-17,stress:13,happiness:-2});return 'You took on a contract project and earned $1,900.'}},{text:'Protect your free time',sub:'Less income, better well-being.',result:()=>{change({energy:11,stress:-10,happiness:5});return 'You turned down extra work to protect your time.'}}]},
- sick:{icon:'🤒',title:'Your health needs attention',text:'You have been feeling run down. You could visit a doctor or hope it resolves on its own.',choices:[{text:'Get checked out',sub:'Spend $350 for a checkup.',result:()=>{if(state.wealth>=350)state.wealth-=350;else state.debt+=350;change({health:10,stress:-4});return 'You got medical care and started feeling better.'}},{text:'Push through',sub:'Save money, risk worsening symptoms.',result:()=>{if(Math.random()<.55){change({health:-12,stress:8});return 'Ignoring the problem made your health worse.'}change({health:-2});return 'The symptoms mostly passed without treatment.'}}]},
- gift:{icon:'🎁',title:'A chance to help',text:'A relative is having a difficult month and asks you for help with an essential bill.',choices:[{text:'Give them $400',sub:'Build connection, reduce your cash.',result:()=>{if(state.wealth>=400){state.wealth-=400;change({happiness:7,social:7});return 'You helped your relative with $400.'}change({stress:5});return 'You offered support, but could not cover the full bill.'}},{text:'Offer practical support',sub:'Give your time, not your money.',result:()=>{change({social:6,energy:-7});return 'You helped your relative find a way forward.'}},{text:'Say you cannot help',sub:'Protect your finances.',result:()=>{change({happiness:-4,stress:2});return 'You declined the request to protect your own budget.'}}]},
- market:{icon:'📉',title:'The economy slows down',text:'Businesses in your city are cutting expenses. Your job may become less secure.',choices:[{text:'Build an emergency fund',sub:'Use your next actions carefully. Reduce stress.',result:()=>{change({smarts:4,stress:-5});return 'You made a more cautious financial plan.'}},{text:'Keep living as usual',sub:'No immediate sacrifice, but uncertainty remains.',result:()=>{if(state.job&&Math.random()<.18){let old=occupation()?.name;state.job=null;state.jobExp=0;change({happiness:-14,stress:16});return `You were laid off from your ${old} job.`}change({stress:5});return 'You continued as usual during a shaky economy.'}}]},
- volunteer:{icon:'🌱',title:'Your community needs help',text:'Your neighborhood is organizing a weekend cleanup and food drive.',choices:[{text:'Show up and volunteer',sub:'Improve happiness and social connections.',result:()=>{change({happiness:8,social:8,energy:-8,stress:-4});return 'You volunteered and connected with your community.'}},{text:'Take a personal day',sub:'Rest and recover.',result:()=>{change({energy:12,stress:-7});return 'You chose to rest and recharge.'}}]},
- childhood:{icon:'🧸',title:'A new interest',text:'You discover an activity you enjoy. You could spend more time learning it or stick to what feels familiar.',choices:[{text:'Practice and learn',sub:'Build knowledge and discipline.',result:()=>{change({smarts:9,energy:-6,happiness:5});return 'You started practicing a new skill.'}},{text:'Play with friends',sub:'Build happiness and social skills.',result:()=>{change({social:9,happiness:9});return 'You spent more time with friends.'}}]},
- school:{icon:'📘',title:'A school challenge',text:'A difficult school project is due soon, and your friends invite you out instead.',choices:[{text:'Finish your project',sub:'Gain knowledge at the cost of free time.',result:()=>{change({smarts:10,stress:4,happiness:-2});return 'You worked hard and completed your project.'}},{text:'Go with friends',sub:'Boost happiness and social skills.',result:()=>{change({social:7,happiness:8,smarts:-2});return 'You skipped studying to hang out with friends.'}}]},
- scholarship:{icon:'🎓',title:'A scholarship opportunity',text:'Your school is offering a small scholarship contest that rewards effort and academic performance.',choices:[{text:'Apply and prepare',sub:'Strong knowledge improves your chances.',result:()=>{if(Math.random()<(state.smarts/125+.1)){state.wealth+=1750;change({happiness:9});return 'You earned a $1,750 educational scholarship!'}change({smarts:6,stress:3});return 'You were not selected, but gained knowledge from the effort.'}},{text:'Skip it this year',sub:'Less pressure, no chance of scholarship.',result:()=>{change({stress:-4});return 'You decided not to apply for the scholarship.'}}]},
- birthday:{icon:'🎉',title:'People are celebrating you',text:'Friends and family invite you out for a small birthday celebration.',choices:[{text:'Celebrate with everyone',sub:'Improve mood and relationships. Spend $120 if you can.',result:()=>{if(state.wealth>=120)state.wealth-=120;change({happiness:13,social:7,energy:-5});return 'You celebrated your birthday with people you care about.'}},{text:'Have a quiet evening',sub:'Build energy and reduce stress.',result:()=>{change({energy:9,stress:-7,happiness:4});return 'You enjoyed a peaceful birthday.'}}]},
-};
-function chooseEvent(){if(state.age<6)return Math.random()<.5?'childhood':null;if(state.age<16)return pick(['school','childhood','volunteer','scholarship']);if(state.age<18)return pick(['school','scholarship','volunteer','birthday']);let possible=['offer','sick','gift','market','volunteer','birthday'];if(state.job&&state.jobExp>=2)possible.push('raise');if(state.car)possible.push('repairs');if(state.housing==='family')possible.push('roommate');return Math.random()<.87?pick(possible):null}
-/* TRUE LIFE Chapter Two: all additional mechanics, no external dependencies */
-const careerExtra=[
-{id:'barber',name:'Barber / Stylist',pay:41000,education:1,skill:35,icon:'💈',blurb:'Creative service work, relationships and repeat clients matter.'},
-{id:'mechanic',name:'Automotive Mechanic',pay:54500,education:1,skill:40,icon:'🚘',blurb:'A skilled trade with hands-on experience.'},
-{id:'driver',name:'Delivery Driver',pay:42500,education:0,skill:20,icon:'🚚',blurb:'Reliable driving with long shifts.'},
-{id:'realestate',name:'Real Estate Agent',pay:62500,education:1,skill:45,icon:'🏡',blurb:'Commission-focused career with an unpredictable market.'},
-{id:'paramedic',name:'Paramedic',pay:57500,education:1,skill:54,icon:'🚑',blurb:'Emergency response. High stakes and demanding hours.'},
-{id:'designer',name:'Graphic Designer',pay:64000,education:2,skill:59,icon:'🎨',blurb:'Build a portfolio and solve creative problems.'},
-{id:'therapist',name:'Therapist',pay:84500,education:4,skill:68,icon:'🧠',blurb:'Graduate education, empathy and steady judgment.'},
-{id:'architect',name:'Architect',pay:98500,education:3,skill:70,icon:'📐',blurb:'Design complex buildings with technical precision.'},
-{id:'engineer',name:'Mechanical Engineer',pay:101000,education:3,skill:73,icon:'⚙️',blurb:'Advanced math and engineering concepts.'},
-{id:'surgeon',name:'Medical Specialist',pay:192000,education:4,skill:90,exp:6,icon:'🩻',blurb:'High skill and years of training; simplified career path.'},
-{id:'director',name:'Business Director',pay:143000,education:3,skill:78,exp:9,icon:'🏢',blurb:'Lead teams, budgets and high-pressure projects.'},
-];
-occupations.push(...careerExtra);
-dwellings.push({id:'owned',name:'Owned Home',annual:0,upfront:0,icon:'🔑',desc:'Your own house and a mortgage.'});
-const goalList=[
-{id:'cash',icon:'💵',name:'Emergency fund',desc:'Save $10,000 in cash.',test:()=>state.wealth>=10000,bonus:4},
-{id:'education',icon:'🎓',name:'Finish a degree',desc:'Earn an associate degree or higher.',test:()=>state.education>=2,bonus:6},
-{id:'career',icon:'💼',name:'Career breakthrough',desc:'Reach $80,000 annual salary.',test:()=>salary()>=80000,bonus:7},
-{id:'house',icon:'🏡',name:'Own a home',desc:'Purchase your first house.',test:()=>!!state.house,bonus:7},
-{id:'love',icon:'💞',name:'Find lasting love',desc:'Build a relationship quality of at least 85.',test:()=>!!state.partner&&state.partnerScore>=85,bonus:5},
-{id:'business',icon:'🚀',name:'Build something',desc:'Grow a business to level 3.',test:()=>state.business&&state.business.level>=3,bonus:8},
-{id:'wellbeing',icon:'🌿',name:'Balanced life',desc:'Reach 80 health and 80 happiness with stress below 30.',test:()=>state.health>=80&&state.happiness>=80&&state.stress<=30,bonus:6},
-];
-const marketStates=['Stable','Growing','Recession','Recovery'];
-const personalities={ambitious:'Ambitious',curious:'Curious',charismatic:'Charismatic',resilient:'Resilient',creative:'Creative',balanced:'Balanced'};
-const hometownParents={working:58,stable:80,difficult:37};
-function makeFamily(){return {mother:{name:pick(['Angela','Monica','Denise','Tanya','Brianna','Teresa']),closeness:65,alive:true,age:rand(38,53)},father:{name:pick(['Marcus','David','Raymond','Chris','James','Andre']),closeness:59,alive:true,age:rand(39,57)},siblings:[{name:pick(people),closeness:57,age:rand(12,25)}]}}
-function normalize(s){if(!s||typeof s!=='object'||typeof s.age!=='number'||!Number.isFinite(s.age)||!Number.isFinite(s.wealth)||typeof s.name!=='string')return null;
- s.name=s.name.slice(0,32);s.age=clamp(Math.floor(s.age),0,120);s.year=clamp(Number(s.year)||2026,1980,2200);
- s.log=Array.isArray(s.log)?s.log.slice(0,300):[];s.children=Array.isArray(s.children)?s.children.slice(0,15):[];
- s.kids=Math.max(s.kids||0,s.children.length);if(s.children.length<s.kids){for(let i=s.children.length;i<s.kids;i++)s.children.push({name:pick(people),age:rand(0,12),closeness:rand(50,85)})}
- s.family=s.family||makeFamily();s.family.mother=s.family.mother||makeFamily().mother;s.family.father=s.family.father||makeFamily().father;s.family.siblings=Array.isArray(s.family.siblings)?s.family.siblings:[];
- const defaults={gpa:3.0,schoolEffort:0,careerPerformance:50,positionLevel:0,reputation:50,skillSocial:40,skillBusiness:30,skillCreative:36,skillPhysical:45,skillFinancial:35,mental:65,savingsRate:0,retired:false,retirementIncome:0,retirementSaved:0,insurance:'basic',lifestyle:'balanced',business:null,house:null,carValue:s.car?5100:0,market:'Stable',history:[],yearLedger:null,achievements:[],goal:'cash',completedGoals:[],applications:0,examAttempts:0,scholarships:0,pet:null,personality:'balanced',avatarStyle:'🧑🏽',criminalRecord:0,unemploymentYears:0,careerHistory:[],sickYears:0,lifetimeActions:0,inflation:1,married:!!s.married,lifeVersion:2,actions:3,sideIncome:0};
- Object.entries(defaults).forEach(([k,v])=>{if(s[k]===undefined||s[k]===null&&v!==null)s[k]=Array.isArray(v)?[]:v});
- s.achievements=Array.isArray(s.achievements)?s.achievements:[];s.completedGoals=Array.isArray(s.completedGoals)?s.completedGoals:[];s.history=Array.isArray(s.history)?s.history.slice(-75):[];
- s.actions=clamp(Number(s.actions)||0,0,5);s.gpa=clamp(Number(s.gpa)||3,0,4);s.careerPerformance=clamp(Number(s.careerPerformance)||50);s.reputation=clamp(Number(s.reputation)||50);
- s.mental=clamp(Number(s.mental)||65);s.credit=clamp(Number(s.credit)||650,300,850);s.wealth=Math.max(0,s.wealth);s.debt=Math.max(0,s.debt||0);s.invested=Math.max(0,s.invested||0);s.retirementSaved=Math.max(0,s.retirementSaved||0);s.kids=s.children.length;
- if(s.house&&(!Number.isFinite(s.house.value)||!Number.isFinite(s.house.mortgage)))s.house=null;
- if(s.house)s.housing='owned';if(s.housing==='owned'&&!s.house)s.housing='family';
- return s}
-const prevFresh=fresh;
-fresh=function(name,city,origin,fromBirth){const s=normalize(prevFresh(name,city,origin,fromBirth));s.family=makeFamily();let base=hometownParents[origin]||58;s.family.mother.closeness=base+rand(-8,8);s.family.father.closeness=base+rand(-12,12);s.gpa=clamp(Math.round((s.smarts/25+rand(-3,3)/10)*100)/100,1.4,4);s.reputation=rand(44,62);s.goal=fromBirth?'wellbeing':'cash';return s};
-const oldLoad=load;
-load=function(){let o=oldLoad();if(o)return normalize(o);try{let v1=JSON.parse(localStorage.getItem('truelife-sim-v1'));if(STORAGE===slotKey(1)&&v1&&typeof v1.name==='string')return normalize(v1)}catch(e){}return null};
-const oldNet=net;
-net=function(){return oldNet()+state.retirementSaved+(state.house?state.house.value-state.house.mortgage:0)+(state.car?state.carValue||0:0)};
-const oldSalary=salary;
-salary=function(){if(state.retired)return 0;return Math.round(oldSalary()*(1+state.positionLevel*.13))};
-function realExpenses(){const f=(cities[state.city]||1)*state.inflation;let house=dwellings.find(x=>x.id===state.housing)||dwellings[0];const household=state.age<19?0:1;const food=house.id==='family'?3700:7900;
- let housing=state.house?(state.house.payment+state.house.value*.022):house.annual*f;
- let transport=(state.car?4100:2300)*f;
- let living=(food+(state.lifestyle==='frugal'?-2100:state.lifestyle==='comfortable'?4400:0))*f;
- const childcare=state.children.reduce((t,c)=>t+(c.age<6?9200:c.age<18?6100:c.age<23?2700:0),0)*f;
- const medical=state.insurance==='better'?3200*f:state.insurance==='none'?0:1400*f;
- const pet=state.pet?950*f:0;
- return {housing:Math.max(0,Math.round(housing*household)),living:Math.round(Math.max(1800,living)*household),transport:Math.round(transport*household),childcare:Math.round(childcare),medical:Math.round(medical*household),pet:Math.round(pet),total:0}}
-annualExpenses=function(){const b=realExpenses();return Object.values(b).reduce((n,v)=>n+v,0)};
-const oldStage=stage;
-stage=function(){if(state.retired)return 'Retirement';return oldStage()};
-const oldDoSimple=doSimple;
-doSimple=function(id){const oldActions=state.actions,oldWealth=state.wealth;oldDoSimple(id);if(state.actions===oldActions)return;
- state.lifetimeActions++;if(id==='study'){state.gpa=clamp(Math.round((state.gpa+.13)*100)/100,0,4);state.schoolEffort++;state.skillBusiness=clamp(state.skillBusiness+1)}
- if(id==='gym'){state.skillPhysical=clamp(state.skillPhysical+5);state.mental=clamp(state.mental+2)}
- if(id==='friends'||id==='family'){state.skillSocial=clamp(state.skillSocial+4);state.reputation=clamp(state.reputation+1)}
- if(id==='rest'||id==='therapy'){state.mental=clamp(state.mental+(id==='therapy'?12:6))}
- if(id==='sidegig'){state.skillBusiness=clamp(state.skillBusiness+2);state.careerPerformance=clamp(state.careerPerformance+1)}
- render();};
-const oldApply=applyJob;
-applyJob=function(id){const j=occupations.find(x=>x.id===id);if(!j||state.age<18||state.job===id||state.retired||state.actions<=0)return toast('You need an available action and must be eligible.');
- if(state.education<j.education||state.smarts<j.skill||(j.exp&&state.experience<j.exp))return toast('You do not meet the requirements yet.');
- if(state.applications>=2)return toast('You have already applied to two jobs this year.');
- const probability=Math.min(.93,clamp((.57+state.reputation/550+state.careerPerformance/700+(state.market==='Recession'?-0.14:0))*100)/100);
- useAction();state.applications++;state.lifetimeActions++;if(Math.random()<probability){const previous=occupation();state.job=id;state.jobExp=0;state.positionLevel=0;state.careerPerformance=clamp(state.careerPerformance+rand(-4,6));state.reputation=clamp(state.reputation+3);state.retired=false;change({happiness:8,stress:4});state.careerHistory.push({role:j.name,age:state.age,pay:salary()});log(`You were hired as ${j.name} at ${cash(salary())}/year${previous?' after leaving '+previous.name:''}.`,'📨');toast('You got the job!')}else{change({stress:5,happiness:-2});log(`You interviewed for ${j.name}, but did not receive an offer.`,'📨');toast('Your application was declined.')}
- render();};
-const oldEnroll=enroll;
-enroll=function(id){if(state.actions<=0)return toast('You need an available action to enroll.');let oldSchool=state.school;oldEnroll(id);if(state.school!==oldSchool&&state.school){useAction();state.lifetimeActions++;render()}};
-const oldMove=move;
-move=function(id){if(state.house)return toast('Sell your owned home before renting elsewhere.');oldMove(id)};
-const oldAct=act;
-act=function(id){if(id==='baby'&&state.partner&&state.age>=18&&state.age<=53&&state.actions>0){openConfirm('Grow your family?',`Raising a child is a long-term responsibility. Early years can cost over $9,000 annually in this simulation.`,()=>{useAction();const n=pick(['Kai','Maya','Noah','Aaliyah','Eli','Ava','Liam','Zoe','Jayden','Harper','Mila','Carter']);state.children.push({name:n,age:0,closeness:80});state.kids=state.children.length;change({happiness:11,energy:-16,stress:11,partnerScore:3});log(`You and ${state.partner} welcomed ${n} into the family.`,'👶');render()},'Welcome a child');return}
- if(id==='marry'&&state.actions<=0)return toast('No free time left this year.');
- oldAct(id)};
-function milestone(id,icon,text){if(state.achievements.includes(id))return;state.achievements.push(id);log(text,icon)}
-function milestones(){if(state.wealth>=10000)milestone('saver','💰','Milestone unlocked: you saved your first $10,000.');if(net()>=100000)milestone('100k','🏆','Milestone unlocked: your net worth reached $100,000.');if(state.house)milestone('homeowner','🏡','Milestone unlocked: you became a homeowner.');if(state.education>=3)milestone('grad','🎓','Milestone unlocked: you earned a university degree.');if(state.kids)milestone('parent','👶','Milestone unlocked: you became a parent.');if(state.married)milestone('marriage','💍','Milestone unlocked: you got married.');if(state.positionLevel>=2)milestone('leader','👑','Milestone unlocked: you rose into career leadership.');if(state.business&&state.business.level>=3)milestone('entrepreneur','🚀','Milestone unlocked: you built a growing business.');
- const current=goalList.find(g=>g.id===state.goal);if(current&&!state.completedGoals.includes(current.id)&&current.test()){state.completedGoals.push(current.id);change({happiness:current.bonus,reputation:3});log(`Life goal complete: ${current.name}!`,'🌟')}}
-const prevProcessYear=processYear;
-function yearlyEconomy(){const r=Math.random();if(state.market==='Recession')state.market=r<.42?'Recession':r<.83?'Recovery':'Stable';else if(state.market==='Recovery')state.market=r<.27?'Recovery':r<.73?'Stable':'Growing';else if(state.market==='Growing')state.market=r<.13?'Recession':r<.64?'Growing':'Stable';else state.market=r<.13?'Recession':r<.38?'Growing':'Stable';return state.market}
-processYear=function(){const notes=[];const beforeNet=net(),beforeCash=state.wealth;const econ=yearlyEconomy();state.inflation=Math.min(2.15,Math.round(state.inflation*(1+(econ==='Recession'?.01:rand(1,3)/100))*1000)/1000);
- let upfrontIncome=0, businessIncome=0, partnerIncome=0, retirementIncome=0;
- if(state.age>=19){
-  if(state.personality==='ambitious'&&state.job){state.careerPerformance=clamp(state.careerPerformance+2);change({stress:1})}
-  if(state.personality==='resilient'&&state.stress>40){change({stress:-3});state.mental=clamp(state.mental+2)}
-  if(state.personality==='curious'&&state.school){state.gpa=clamp(state.gpa+.04,0,4)}
-  if(state.retired&&state.age>=67){retirementIncome=Math.round(Math.min(44000,14500+state.totalEarned*.008));state.wealth+=retirementIncome;upfrontIncome+=retirementIncome;}
-  if(state.married&&state.partner&&state.partnerScore>=25){partnerIncome=Math.round((20000+state.social*170)* (cities[state.city]||1)*(.6+state.partnerScore/190));state.wealth+=partnerIncome;upfrontIncome+=partnerIncome;}
-  if(state.business){const biz=state.business;const macro=econ==='Recession'?.72:econ==='Growing'?1.13:1;const base=6500*biz.level+state.skillBusiness*115+(state.personality==='creative'&&biz.id==='media'?2200:0);businessIncome=Math.round((base*macro*rand(72,128)/100)-biz.level*3900);if(businessIncome>0){const businessTax=Math.round(businessIncome*.19);state.wealth+=businessIncome-businessTax;upfrontIncome+=businessIncome-businessTax;}else{state.wealth+=businessIncome;upfrontIncome+=businessIncome;}biz.earned=(biz.earned||0)+businessIncome;biz.years++;if(businessIncome>9000){biz.streak=(biz.streak||0)+1;if(biz.streak>=2&&biz.level<5){biz.level++;biz.streak=0;notes.push(`${biz.name} expanded to level ${biz.level} after profitable years.`)}}else{biz.streak=0;if(businessIncome<0)change({stress:7})}}
- }
- const baseNotes=prevProcessYear();notes.push(...baseNotes);
- if(state.age<19){const effort=state.schoolEffort||0;let progress=rand(-3,6)/100+effort*.12+(state.smarts-50)/600;state.gpa=clamp(Math.round((state.gpa+progress)*100)/100,1,4);if(state.age===17)notes.push(`You finished the school year with a ${state.gpa.toFixed(2)} GPA.`);if(state.age===18&&state.gpa>=3.65){state.wealth+=2500;notes.push('Your academic record earned a $2,500 graduation award.')}if(state.age===18&&state.gpa<2.0){change({stress:8});notes.push('Graduation was a struggle, but you finished high school.')}
- }
- if(state.age>=19){
-  if(state.job){let performanceShift=rand(-5,8)+(state.energy<25?-7:0)+(state.stress>78?-7:0);state.careerPerformance=clamp(state.careerPerformance+performanceShift);if(state.careerPerformance>=77&&state.jobExp>=3&&state.positionLevel<4&&Math.random()<.27){state.positionLevel++;change({happiness:7,reputation:6});notes.push(`You earned a promotion as ${occupation().name}! Your salary increased.`)}
-   if(state.market==='Recession'&&Math.random()<.075&&(state.careerPerformance<65)){notes.push(`Your role was cut during a recession. You were laid off.`);state.job=null;state.jobExp=0;state.positionLevel=0;change({stress:16,happiness:-10})}
-  }else if(!state.retired){state.unemploymentYears++;}
-  if(state.house){const h=state.house;h.value=Math.round(h.value*(econ==='Recession'?rand(95,102)/100:rand(100,106)/100));const interest=h.mortgage*h.rate;const principal=Math.min(h.mortgage,Math.max(0,h.payment-interest));h.mortgage=Math.max(0,Math.round(h.mortgage-principal));h.yearsLeft=Math.max(0,(h.yearsLeft||30)-1);if(h.mortgage===0){h.payment=0;notes.push('You finished paying off your mortgage. Your home is yours outright!')}}
-  if(state.car&&state.carValue>0)state.carValue=Math.max(550,Math.round(state.carValue*.85));
-  const decline=state.stress>=80?rand(4,9):state.stress>=58?rand(1,4):0;if(decline){state.mental=clamp(state.mental-decline);if(state.mental<25)notes.push('Ongoing stress is taking a toll. Consider rest or professional support.')}else state.mental=clamp(state.mental+rand(0,3));
-  if(state.insurance==='better'&&state.health<55){change({health:4});}
-  if(state.lifestyle==='comfortable')change({happiness:2,stress:-1});if(state.lifestyle==='frugal')change({stress:1});
- }
- for(const child of state.children){child.age++;child.closeness=clamp(child.closeness-rand(1,5));if(child.age===18)notes.push(`${child.name} turned 18. They're starting their own adult life.`)}state.kids=state.children.length;
- for(const key of ['mother','father']){const p=state.family[key];if(p&&!p.alive)continue;if(p){p.age++;if(p.age>75&&Math.random()<(.016+(p.age-75)*.007)){p.alive=false;change({happiness:-13,stress:9});notes.push(`Your ${key}, ${p.name}, passed away at age ${p.age}.`)}else p.closeness=clamp(p.closeness-rand(0,2))}}
- for(const sib of state.family.siblings){sib.age++;sib.closeness=clamp(sib.closeness-rand(0,3))}
- state.applications=0;state.schoolEffort=0;
- if(state.age>=19){const expense=annualExpenses();const gross=salary()+retirementIncome+partnerIncome+Math.max(0,businessIncome);const effectiveTax=Math.round(salary()*taxRate(salary())+Math.max(0,businessIncome)*.19);const record={year:state.year,age:state.age,income:Math.round(gross),salary:salary(),businessIncome,partnerIncome,retirementIncome,tax:effectiveTax,expenses:Math.round(expense),cashChange:Math.round(state.wealth-beforeCash),networth:Math.round(net()),debt:Math.round(state.debt),market:econ};state.yearLedger=record;if(state.age<=120)state.history.push(record);state.history=state.history.slice(-75);if(businessIncome)notes.push(`${state.business.name} ${businessIncome>=0?'earned':'lost'} ${cash(Math.abs(businessIncome))} this year.`);if(partnerIncome)notes.push(`${state.partner} contributed ${cash(partnerIncome)} to shared household expenses.`);if(retirementIncome)notes.push(`You received ${cash(retirementIncome)} in retirement benefits.`)}
- milestones();if(state.market==='Recession')notes.push('The local economy is in recession; job opportunities and business income may suffer.');
- return notes;};
-// New contextual events join the original event set and inherit the original modal.
-events.childOpportunity={icon:'🧒',title:'An opportunity for your child',text:()=>`${state.children[0]?.name||'Your child'} wants to join an extracurricular program. It costs time and money, but could be important to them.`,choices:[
-{text:'Help them join',sub:'Spend $480 and strengthen your bond.',result:()=>{if(state.wealth>=480)state.wealth-=480;else state.debt+=480;state.children[0].closeness=clamp(state.children[0].closeness+14);change({happiness:7,stress:2});return `${state.children[0].name} joined the program with your support.`}},
-{text:'Find a free alternative',sub:'Take extra time to find a low-cost option.',result:()=>{state.children[0].closeness=clamp(state.children[0].closeness+8);change({energy:-7,social:2});return `You found a community program for ${state.children[0].name}.`}}]};
-events.burnout={icon:'🌧️',title:'Running on empty',text:'Deadlines and responsibilities are piling up. You feel exhausted.',choices:[
-{text:'Take time to recover',sub:'Better health and balance; your performance may drop.',result:()=>{change({energy:22,stress:-16,health:6});state.careerPerformance=clamp(state.careerPerformance-6);return 'You chose recovery instead of pushing through.'}},
-{text:'Keep pushing',sub:'Work performance can improve, but at a personal cost.',result:()=>{state.careerPerformance=clamp(state.careerPerformance+10);change({energy:-11,stress:12,health:-8,mental:-8});return 'You delivered the work, but your well-being suffered.'}}]};
-events.community={icon:'🎓',title:'Someone offers you a connection',text:'An old classmate knows someone hiring and offers to introduce you.',choices:[
-{text:'Make the connection',sub:'Improve your reputation and job performance.',result:()=>{change({social:7,happiness:3});state.reputation=clamp(state.reputation+10);state.careerPerformance=clamp(state.careerPerformance+5);return 'You expanded your professional network.'}},
-{text:'Decline politely',sub:'Focus on other priorities.',result:()=>{change({stress:-4});return 'You decided not to use the connection.'}}]};
-events.rentIncrease={icon:'🏠',title:'The cost of living rises',text:'Your landlord announces a rent increase in your neighborhood.',choices:[
-{text:'Adjust your spending',sub:'Save money by living more carefully.',result:()=>{state.lifestyle='frugal';change({stress:5,smarts:3});return 'You changed your spending habits to protect your finances.'}},
-{text:'Stay comfortable',sub:'Keep your current routine, but face higher expenses.',result:()=>{change({happiness:2,stress:6});state.inflation=Math.min(2.15,state.inflation*1.02);return 'You absorbed a higher cost of living.'}}]};
-events.studyChallenge={icon:'🧑‍🎓',title:'School versus work',text:'Your school has a major project due, but extra work hours could help you pay your bills.',choices:[
-{text:'Focus on the project',sub:'Improve your GPA and knowledge.',result:()=>{state.schoolEffort+=2;state.gpa=clamp(state.gpa+.25,0,4);change({smarts:6,stress:5});return 'You put your education first and made academic progress.'}},
-{text:'Take more shifts',sub:'Earn $900 now; fall behind academically.',result:()=>{state.wealth+=900;state.gpa=clamp(state.gpa-.24,0,4);change({energy:-12,stress:8});return 'You took extra shifts, but struggled to keep up with coursework.'}}]};
-events.relationshipTalk={icon:'💬',title:'An important conversation',text:()=>`${state.partner} says you have been distracted and wants you both to make more time for each other.`,choices:[
-{text:'Listen and make a plan',sub:'Invest in the relationship.',result:()=>{state.partnerScore=clamp(state.partnerScore+17);change({happiness:6,energy:-4});return `You and ${state.partner} worked out a better balance.`}},
-{text:'Ignore the concern',sub:'Avoid a difficult conversation now.',result:()=>{state.partnerScore=clamp(state.partnerScore-20);change({stress:5});return `You dismissed ${state.partner}'s concerns. Trust fell.`}}]};
-events.healthChoice={icon:'🩺',title:'Preventive care reminder',text:'Your health provider suggests a routine checkup. The price depends on your coverage.',choices:[
-{text:'Schedule a checkup',sub:'Spend up to $350 depending on insurance.',result:()=>{const cost=state.insurance==='better'?75:state.insurance==='basic'?175:350;if(state.wealth>=cost)state.wealth-=cost;else state.debt+=cost;change({health:9,stress:-4});return `You attended a checkup and paid ${cash(cost)}.`}},
-{text:'Skip this year',sub:'Save cash but miss preventive care.',result:()=>{if(Math.random()<.35)change({health:-8,stress:3});return 'You postponed the appointment.'}}]};
-const prevChooseEvent=chooseEvent;
-chooseEvent=function(){const original=prevChooseEvent();if(Math.random()<.44){const pool=['community','healthChoice'];if(state.age>=18&&!state.retired&&state.job&&state.stress>55)pool.push('burnout');if(state.housing!=='family'&&!state.house)pool.push('rentIncrease');if(state.school)pool.push('studyChallenge');if(state.partner)pool.push('relationshipTalk');if(state.children.some(c=>c.age>=5&&c.age<=17))pool.push('childOpportunity');return pick(pool)}return original};
-function enoughAction(cost=0){if(state.gameover)return false;if(state.actions<1){toast('You used your time this year. Age up to make more moves.');return false}if(state.wealth<cost){toast(`You need ${cash(cost)} to do this.`);return false}return true}
-function doAction(cost=0){if(!enoughAction(cost))return false;state.wealth-=cost;useAction();state.lifetimeActions++;return true}
-function extraAction(id,arg){if(!state||state.gameover)return;
- if(id==='workHard'){if(!state.job||state.retired||!doAction())return;state.careerPerformance=clamp(state.careerPerformance+rand(11,18));change({stress:8,energy:-11,smarts:2});log('You put extra effort into your job. Your work performance improved.','💼');finish();return}
- if(id==='network'){if(state.age<16||!doAction(60))return;state.reputation=clamp(state.reputation+rand(8,14));state.skillSocial=clamp(state.skillSocial+7);change({social:6,energy:-5});log('You went to a networking event and made new professional connections.','🤝');finish();return}
- if(id==='raise'){if(!state.job||state.jobExp<2||!enoughAction())return;const chance=(state.careerPerformance+state.reputation)/250;useAction();state.lifetimeActions++;if(Math.random()<chance){state.positionLevel=Math.min(5,state.positionLevel+1);change({happiness:8});log('You negotiated better pay using your track record.','📈');toast('Your salary went up!')}else{change({stress:6});log('You asked for a raise, but management said no.','📨');toast('Raise request declined.')}finish();return}
- if(id==='quit'){if(!state.job)return;openConfirm('Quit your job?',`You will lose your annual salary of ${cash(salary())}. Finding new work could take time.`,()=>{const title=occupation()?.name;state.job=null;state.jobExp=0;state.positionLevel=0;change({stress:-9,happiness:3});log(`You left your job as ${title}.`,'📤');finish()},'Quit job');return}
- if(id==='retire'){if(state.age<62||state.retired)return;openConfirm('Enter retirement?',`You can stop working now. Estimated retirement benefits begin at age 67. You will still have living costs.`,()=>{state.retired=true;state.job=null;state.jobExp=0;change({stress:-15,happiness:6});log('You decided to retire and enter a new chapter of life.','🌴');finish()},'Retire now');return}
- if(id==='city'){if(state.age<18||state.house||state.city===arg||!enoughAction(3200))return;openConfirm('Move to '+arg+'?',`Relocation costs $3,200. Your pay and cost of living will reflect the new city.`,()=>{if(!doAction(3200))return;const old=state.city;state.city=arg;change({happiness:5,stress:9});log(`You relocated from ${old} to ${arg} for a fresh start.`,'🗺️');finish()},'Move cities');return}
- if(id==='style'){if(state.age<18)return;state.lifestyle=arg;log(`You updated your lifestyle budget to ${arg}.`,'🧾');finish();return}
- if(id==='insurance'){if(state.age<18)return;state.insurance=arg;log(`You changed your health coverage to ${arg}.`,'🩺');finish();return}
- if(id==='homeBuy'){if(state.age<18||state.house)return;const prices={starter:165000,townhouse:255000,family:355000};const p=prices[arg];if(!p)return;const price=Math.round(p*(cities[state.city]||1)*state.inflation);const down=Math.round(price*.18);const closing=Math.round(price*.025);const total=down+closing;const loan=price-down;const monthly=.064/12;const yearly=Math.round(12*loan*(monthly*Math.pow(1+monthly,360))/(Math.pow(1+monthly,360)-1));if(state.wealth<total||state.credit<620||salary()<40000){toast('You need savings for closing, credit 620+, and $40,000+ in annual salary.');return}if(!enoughAction(total))return;
- openConfirm('Buy your own home?',`Price ${cash(price)} · down payment and closing ${cash(total)} · approximate mortgage ${cash(yearly)}/yr, plus property tax and upkeep.`,()=>{if(!doAction(total))return;state.house={name:{starter:'Starter Home',townhouse:'Townhouse',family:'Family Home'}[arg],value:price,mortgage:loan,rate:.064,payment:yearly,yearsLeft:30};state.housing='owned';change({happiness:13,stress:5});log(`You bought a ${state.house.name.toLowerCase()} for ${cash(price)}.`,'🔑');milestones();finish()},'Buy home');return}
- if(id==='homeSell'){if(!state.house)return;const h=state.house;const proceeds=Math.round(h.value*.94-h.mortgage);openConfirm('Sell your home?',`Estimated sale value ${cash(h.value)} after 6% selling costs and the remaining mortgage: ${cash(proceeds)}.`,()=>{if(proceeds<0&&state.wealth<Math.abs(proceeds)){toast('You cannot cover the amount owed at closing.');return}state.wealth+=proceeds;state.house=null;state.housing='family';change({stress:4});log(`You sold your home with ${cash(proceeds)} in net proceeds.`,'🏡');finish()},'Sell property');return}
- if(id==='businessStart'){if(state.age<18||state.business)return;const types={detail:['Mobile Auto Detailing',4500],media:['Digital Media Studio',3500],food:['Pop-Up Food Business',7000],lawn:['Landscaping Service',3800]};const info=types[arg];if(!info||!enoughAction(info[1]))return;openConfirm('Start '+info[0]+'?',`Your startup will cost ${cash(info[1])}. Revenue and costs will vary each year with skills, effort, and the economy.`,()=>{if(!doAction(info[1]))return;state.business={id:arg,name:info[0],level:1,years:0,earned:0,streak:0};state.skillBusiness=clamp(state.skillBusiness+6);log(`You launched ${info[0]} as a side business.`,'🚀');finish()},'Launch business');return}
- if(id==='businessGrow'){if(!state.business||state.business.level>=5||!enoughAction(3200))return;if(!doAction(3200))return;state.business.level++;state.skillBusiness=clamp(state.skillBusiness+7);change({stress:7,energy:-10});log(`You reinvested $3,200 to expand ${state.business.name} to level ${state.business.level}.`,'🚀');milestones();finish();return}
- if(id==='businessClose'){if(!state.business)return;openConfirm('Close your business?',`${state.business.name} has earned ${cash(state.business.earned)} over ${state.business.years} years. This ends its future income.`,()=>{log(`You closed ${state.business.name}.`,'🏁');state.business=null;finish()},'Close business');return}
- if(id==='bond'){let person=arg==='mother'?state.family.mother:arg==='father'?state.family.father:state.family.siblings[Number(arg.slice(8))];if(!person||!person.alive||!doAction(state.age>=18?75:0))return;person.closeness=clamp(person.closeness+rand(12,19));change({happiness:6,social:3,stress:-3});log(`You spent some quality time with ${person.name}. Your relationship grew stronger.`,'🏡');finish();return}
- if(id==='child'){const child=state.children[Number(arg)];if(!child||!doAction(45))return;child.closeness=clamp(child.closeness+rand(13,21));change({happiness:6,energy:-6,stress:-2});log(`You spent meaningful time with ${child.name}.`,'🧸');finish();return}
- if(id==='separate'){if(!state.partner)return;openConfirm(state.married?'File for divorce?':'End this relationship?',`This will end your relationship with ${state.partner}. Divorce also costs money and can affect your household.`,()=>{const name=state.partner;const m=state.married;if(m){const cost=Math.min(state.wealth,3200);state.wealth-=cost;state.debt+=3200-cost;}state.partner=null;state.married=false;state.partnerScore=0;change({happiness:-14,stress:10});log(`You and ${name} ${m?'divorced':'broke up'}.`,'💔');finish()},state.married?'Divorce':'Break up');return}
- if(id==='adoptPet'){if(state.pet||!doAction(450))return;state.pet={name:pick(['Mochi','Rocky','Blue','Buddy','Luna','Nova']),age:0};change({happiness:11,social:3});log(`You adopted a pet named ${state.pet.name}.`,'🐕');finish();return}
- if(id==='mental'){if(!doAction(state.age<18?0:180))return;state.mental=clamp(state.mental+20);change({stress:-16,health:3,happiness:5});log('You invested in your mental well-being with a counseling session.','🌿');finish();return}
- if(id==='financeStudy'){if(!doAction())return;state.skillFinancial=clamp(state.skillFinancial+12);change({smarts:3,stress:2});log('You learned budgeting, credit and long-term saving skills.','📖');finish();return}
- if(id==='volunteer'){if(!doAction())return;state.reputation=clamp(state.reputation+8);change({happiness:6,social:8,energy:-8});log('You volunteered to support your local community.','🌱');finish();return}
- if(id==='retirementSave'){const amt=Number(arg);if(!amt||state.age<18||!doAction(amt))return;state.retirementSaved+=amt;state.skillFinancial=clamp(state.skillFinancial+2);log(`You put ${cash(amt)} into long-term retirement savings.`,'🏦');finish();return}
- if(id==='retirementWithdraw'){if(state.age<60||state.retirementSaved<=0)return toast('Retirement funds are locked until age 60 in this game.');state.wealth+=state.retirementSaved;log(`You withdrew ${cash(state.retirementSaved)} from retirement savings.`,'🏦');state.retirementSaved=0;finish();return}
- if(id==='goal'){const g=goalList.find(x=>x.id===arg);if(!g)return;state.goal=arg;log(`You set a new life goal: ${g.name}.`,'🎯');milestones();finish();return}
-}
-function finish(){milestones();render()}
-function v2button(label,id,arg='',disabled=false){return `<button type="button" class="smallbutton" data-v2="${id}" data-arg="${esc(arg)}" ${disabled?'disabled':''}>${label}</button>`}
-function meter(n){return `<div class="v2-meter"><span style="width:${clamp(n)}%"></span></div>`}
-function panel(title,meta,body){return `<section class="panel"><div class="paneltitle"><h3>${title}</h3><span>${meta||''}</span></div>${body}</section>`}
-function moneyRow(label,value,note=''){return `<div class="v2-moneyrow"><span>${label}${note?`<small>${note}</small>`:''}</span><strong>${value}</strong></div>`}
-function renderDashboardExtra(){const selected=goalList.find(g=>g.id===state.goal)||goalList[0];const school=state.age<=18;const actions=state.actions;
- return `<div class="v2-worldbar"><div><span class="v2-dot ${state.market==='Recession'?'danger':''}"></span><strong>THE WORLD AROUND YOU</strong><span> ${state.market} economy · ${state.city} · ${(state.inflation*100).toFixed(0)}% cost index</span></div><div class="v2-word">CHAPTER TWO</div></div><div class="v2-spotlight"><div><span class="eyebrow">YOUR CURRENT LIFE GOAL</span><h3>${selected.icon} ${selected.name}</h3><p>${selected.desc} ${state.completedGoals.includes(selected.id)?'✓ Completed':''}</p></div>${v2button('Change goal','openGoals')}</div>`;
-}
-function renderHomeExtra(){const facts=[['📊','Career reputation',`${Math.round(state.reputation)}/100`],['🧠','Mental well-being',`${Math.round(state.mental)}/100`],[state.age<19?'📘':'🏅',state.age<19?'Current GPA':'Career performance',state.age<19?state.gpa.toFixed(2)+'/4.00':Math.round(state.careerPerformance)+'/100'],['🎯','Life milestones',`${state.achievements.length} achieved`]];
- return panel('Your life beyond the stats','Long-term decisions matter',`<div class="v2-grid4">${facts.map(f=>`<div class="v2-fact"><small>${f[0]} ${f[1]}</small><strong>${f[2]}</strong></div>`).join('')}</div><div class="v2-subsection"><strong>Your personality: ${personalities[state.personality]||'Balanced'}</strong><p>Your natural strengths shape school, work, well-being and opportunities. Protect your health while building a career, relationships and financial stability.</p></div>`)+(state.age<=18?panel('Growing up','Grades and opportunities',`<div class="v2-detailcallout"><strong>🎒 School performance: ${state.gpa.toFixed(2)} GPA</strong><p>Studying raises your knowledge and academic performance. Your background, family ties, and school choices can change your future.</p>${meter(state.gpa*25)}</div>`):'');}
-function renderCareerExtra(){const level=state.positionLevel;return panel('Workplace & career development',`${state.actions} actions this year`, `<div class="v2-grid4"><div class="v2-fact"><small>Work performance</small><strong>${Math.round(state.careerPerformance)}%</strong>${meter(state.careerPerformance)}</div><div class="v2-fact"><small>Career reputation</small><strong>${Math.round(state.reputation)}%</strong>${meter(state.reputation)}</div><div class="v2-fact"><small>Promotions earned</small><strong>${level}</strong></div><div class="v2-fact"><small>Job applications</small><strong>${state.applications} / 2</strong></div></div><div class="actiongrid" style="margin-top:15px"><button class="action" data-v2="workHard" ${!state.job||state.actions<1?'disabled':''}><span class="actionico">⚒️</span><span><strong>Work harder</strong><small>Performance up · More stress</small></span></button><button class="action" data-v2="network" ${state.age<16||state.actions<1||state.wealth<60?'disabled':''}><span class="actionico">🤝</span><span><strong>Network</strong><small>Reputation & contacts · $60</small></span></button><button class="action" data-v2="raise" ${!state.job||state.jobExp<2||state.actions<1?'disabled':''}><span class="actionico">📈</span><span><strong>Negotiate raise</strong><small>Requires at least 2 years in role</small></span></button><button class="action" data-v2="quit" ${!state.job?'disabled':''}><span class="actionico">🚪</span><span><strong>Leave your job</strong><small>Change career direction</small></span></button></div><div class="v2-note">Your performance, reputation, qualifications and the economy affect hiring and promotions. Each application costs one action.</div>`)+panel('Build a business','Earn income outside your day job',state.business?`<div class="v2-feature"><div><h4>🚀 ${esc(state.business.name)}</h4><p>Level ${state.business.level} / 5 · ${state.business.years} years operating · Lifetime profit ${cash(state.business.earned)}</p></div><div class="v2-actions">${v2button('Reinvest $3,200','businessGrow','',state.business.level>=5||state.wealth<3200||state.actions<1)}${v2button('Close','businessClose')}</div></div>`:`<p class="intro">Start small, reinvest, develop business skills and grow. Earnings change with the market and there is no guarantee of a profit.</p><div class="v2-cards">${[['detail','🚗','Mobile detailing','$4,500'],['media','🎥','Digital media studio','$3,500'],['food','🥘','Pop-up food business','$7,000'],['lawn','🌳','Landscaping service','$3,800']].map(([id,ic,n,c])=>`<div class="v2-option"><div><strong>${ic} ${n}</strong><small>Startup: ${c}</small></div>${v2button('Launch','businessStart',id,state.age<18||state.actions<1||state.wealth<Number(c.replace(/\D/g,'')))}</div>`).join('')}</div>`) + (state.age>=62?panel('Retirement','A different pace',state.retired?`<p>You are retired. Your retirement savings, living costs, and later-life benefits determine financial stability.</p>`:`<p class="intro">You can retire now. Benefits begin at 67 in this fictional model.</p>${v2button('Retire from work','retire')}`):'');}
-function wealthChart(){const a=(state.history||[]).slice(-18);if(a.length<2)return `<div class="empty">Age up through at least two adult years to see your net-worth trend.</div>`;const v=a.map(x=>x.networth);const mn=Math.min(0,...v),mx=Math.max(1000,...v),diff=Math.max(1,mx-mn);const pts=v.map((n,i)=>`${Math.round(20+i*600/(v.length-1))},${Math.round(130-(n-mn)/diff*108)}`).join(' ');return `<div class="v2-chart"><svg viewBox="0 0 640 160" role="img" aria-label="Your net worth over the last ${a.length} years" preserveAspectRatio="none"><line x1="20" x2="620" y1="130" y2="130" stroke="#3b5265"/><polyline points="${pts}" fill="none" stroke="#6fe7c2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="v2-chartlabels"><span>AGE ${a[0].age}</span><strong>${cash(v[v.length-1])} net worth</strong><span>AGE ${a[a.length-1].age}</span></div></div>`}
-function renderMoneyExtra(){const b=realExpenses(),income=salary()+(state.retired&&state.age>=67?Math.round(Math.min(44000,14500+state.totalEarned*.008)):0);const projectedTax=Math.round(salary()*taxRate(salary()));let partner=state.married&&state.partner&&state.partnerScore>=25?Math.round((20000+state.social*170)*(cities[state.city]||1)*(.6+state.partnerScore/190)):0;
- const baseAnnual=income+partner-projectedTax-annualExpenses();const options=[['frugal','Frugal','Spend less, small stress increase'],['balanced','Balanced','Middle ground'],['comfortable','Comfortable','Higher quality of life, higher bills']];
- return panel('Your real annual budget','A clearer financial picture',`<div class="v2-budget">${moneyRow('Salary & estimated retirement benefits',cash(income))}${moneyRow('Partner household contribution',cash(partner),state.married?'Shared married finances':'Only when married and connected')}${moneyRow('Estimated income taxes','−'+cash(projectedTax))}${moneyRow('Housing','−'+cash(b.housing))}${moneyRow('Food, utilities & personal','−'+cash(b.living))}${moneyRow('Transportation','−'+cash(b.transport))}${moneyRow('Childcare & dependents','−'+cash(b.childcare))}${moneyRow('Health coverage & pet','−'+cash(b.medical+b.pet))}<div class="v2-moneytotal">${moneyRow('Estimated cash flow / year',cash(baseAnnual),'Before student tuition, business income and loan payments')}</div></div><p class="footnote">A simplified, fictional U.S.-inspired economy for gameplay, not financial, legal, tax or medical advice.</p>`)+panel('Cashflow history','Your last 18 years',wealthChart())+panel('Financial decisions','Choose your spending habits',`<div class="v2-segments">${options.map(([id,title,sub])=>`<button class="v2-segment ${state.lifestyle===id?'picked':''}" data-v2="style" data-arg="${id}" ${state.age<18?'disabled':''}><strong>${title}</strong><small>${sub}</small></button>`).join('')}</div><div class="v2-subsection"><strong>Health coverage</strong><div class="v2-segments">${[['none','None'],['basic','Basic'],['better','Better']].map(([id,name])=>`<button class="v2-segment ${state.insurance===id?'picked':''}" data-v2="insurance" data-arg="${id}" ${state.age<18?'disabled':''}>${name}</button>`).join('')}</div></div><div class="v2-subsection"><strong>Long-term retirement savings</strong><p>Saved: ${cash(state.retirementSaved)}. Funds are held until age 60; this account has no investment returns in this version.</p><div class="v2-actions">${[500,2500,10000].map(x=>v2button('Save '+cash(x),'retirementSave',String(x),state.age<18||state.actions<1||state.wealth<x)).join('')}${v2button('Withdraw','retirementWithdraw','',state.age<60||state.retirementSaved<=0)}</div></div>`)+panel('Own a home','Mortgage and long-term equity',state.house?`<div class="v2-feature"><div><h4>🏡 ${esc(state.house.name)}</h4><p>Estimated home value ${cash(state.house.value)} · Mortgage ${cash(state.house.mortgage)} · Equity ${cash(state.house.value-state.house.mortgage)} · Loan ${state.house.yearsLeft} years remaining</p></div>${v2button('Sell home','homeSell')}</div>`:`<div class="v2-cards">${[['starter','Starter home',165000],['townhouse','Townhouse',255000],['family','Family home',355000]].map(([id,n,p])=>{const price=Math.round(p*(cities[state.city]||1)*state.inflation),start=Math.round(price*.205);return `<div class="v2-option"><div><strong>🔑 ${n}</strong><small>Price ${cash(price)} · up front ~${cash(start)}</small></div>${v2button('Purchase','homeBuy',id,state.age<18||state.actions<1||state.wealth<start||state.credit<620||salary()<40000)}</div>`}).join('')}</div><p class="footnote">Requires a credit score of 620+, $40,000+ annual salary and enough cash for roughly 20.5% down payment and closing costs. Mortgage and maintenance are paid annually.</p>`) + panel('Change cities','Housing and salaries vary',`<div class="v2-citygrid">${Object.entries(cities).map(([c,f])=>`<div class="v2-city"><div><strong>${c}</strong><small>Cost factor ×${f.toFixed(2)}</small></div>${v2button(state.city===c?'Current':'Move $3,200','city',c,state.age<18||state.house||state.city===c||state.actions<1||state.wealth<3200)}</div>`).join('')}</div>`);
-}
-function personCard(icon,person,role,action,arg){return `<div class="v2-person"><div class="v2-personicon">${icon}</div><div class="v2-personinfo"><strong>${esc(person.name)} <span>${role}</span></strong><small>${person.alive===false?'Deceased':`Age ${person.age!==undefined?person.age:'—'} · Bond ${Math.round(person.closeness||0)}%`}</small>${meter(person.closeness||0)}</div>${v2button('Spend time',action,arg,person.alive===false||state.actions<1||state.wealth<(state.age<18?0:75))}</div>`}
-function renderPeopleExtra(){return panel('Your actual family','Relationships change over time',`<div class="v2-people">${personCard('👩',state.family.mother,'Mother','bond','mother')}${personCard('👨',state.family.father,'Father','bond','father')}${state.family.siblings.map((p,i)=>personCard('🧑',p,'Sibling','bond','sibling-'+i)).join('')}</div>`)+(state.children.length?panel('Your children','Time together matters',`<div class="v2-people">${state.children.map((p,i)=>personCard('🧸',p,'Child','child',String(i))).join('')}</div>`):'')+panel('Your household','More than relationship status',`${state.partner?`<div class="v2-feature"><div><h4>💞 ${esc(state.partner)}</h4><p>${state.married?'Married':'Dating'} · Trust ${Math.round(state.partnerScore)}% · Relationships weaken if neglected</p>${meter(state.partnerScore)}</div>${v2button(state.married?'Divorce':'Break up','separate')}</div>`:`<p class="intro">You are single. Meeting someone takes time and relationships require continued care.</p>`}<div class="v2-subsection">${state.pet?`<strong>🐕 ${esc(state.pet.name)}, your pet</strong><p>Pets add comfort and annual care costs.</p>`:`<strong>🐾 A companion animal</strong><p>Adopting a pet costs $450 plus annual care. It's a meaningful commitment.</p>${v2button('Adopt pet','adoptPet','',state.actions<1||state.wealth<450)}`}</div>`);
-}
-function renderWellness(){return ageFooter()+panel('Physical and mental well-being','Actions have lasting effects',`<div class="v2-grid4"><div class="v2-fact"><small>❤️ Physical health</small><strong>${Math.round(state.health)}%</strong>${meter(state.health)}</div><div class="v2-fact"><small>🧠 Mental well-being</small><strong>${Math.round(state.mental)}%</strong>${meter(state.mental)}</div><div class="v2-fact"><small>🌧️ Stress</small><strong>${Math.round(state.stress)}%</strong>${meter(state.stress)}</div><div class="v2-fact"><small>💪 Fitness</small><strong>${Math.round(state.fitness)}%</strong>${meter(state.fitness)}</div></div><p class="footnote">Balance stress, activity and rest. More stress may affect physical well-being, mood and job performance over time.</p><div class="actiongrid" style="margin-top:15px">${actionButton('gym','🏃','Exercise','Fitness and health, uses time',state.actions<1)}${actionButton('rest','🛌','Rest and recover','Restore energy and reduce stress',state.actions<1)}${actionButton('doctor','🩺','See a doctor','Health care · $260',state.actions<1||state.wealth<260||state.age<18)}<button class="action" data-v2="mental" ${state.actions<1||state.wealth<(state.age<18?0:180)?'disabled':''}><span class="actionico">🌿</span><span><strong>Mental health care</strong><small>Well-being + · Stress − · $180 adult</small></span></button></div>`)+panel('Personal development','New strengths, new choices',`<div class="v2-skills">${[['Financial knowledge',state.skillFinancial],['Social confidence',state.skillSocial],['Business ability',state.skillBusiness],['Physical conditioning',state.skillPhysical]].map(([name,n])=>`<div class="v2-skill"><div><span>${name}</span><strong>${Math.round(n)}%</strong></div>${meter(n)}</div>`).join('')}</div><div class="actiongrid" style="margin-top:16px"><button class="action" data-v2="financeStudy" ${state.actions<1?'disabled':''}><span class="actionico">📗</span><span><strong>Learn money skills</strong><small>Build financial confidence</small></span></button><button class="action" data-v2="volunteer" ${state.actions<1?'disabled':''}><span class="actionico">🌱</span><span><strong>Volunteer</strong><small>Build community ties and reputation</small></span></button></div>`);
-}
-function renderJournalExtra(){const achievements=[['saver','💰','First $10K'],['100k','🏆','$100K net worth'],['grad','🎓','University degree'],['homeowner','🏡','Homeowner'],['parent','👶','First child'],['marriage','💍','Married'],['leader','👑','Career leader'],['entrepreneur','🚀','Growing business']];return panel('Milestones & achievements',`${state.achievements.length} unlocked`, `<div class="v2-badges">${achievements.map(([id,icon,name])=>`<div class="v2-achievement ${state.achievements.includes(id)?'unlocked':''}"><span>${icon}</span><strong>${name}</strong><small>${state.achievements.includes(id)?'UNLOCKED':'NOT YET'}</small></div>`).join('')}</div>`)+panel('Life goals','Set your next direction',`<div class="v2-cards">${goalList.map(g=>`<div class="v2-option"><div><strong>${g.icon} ${g.name}</strong><small>${g.desc}${state.completedGoals.includes(g.id)?' · Completed ✓':''}</small></div>${v2button(state.goal===g.id?'Current':'Choose','goal',g.id,state.goal===g.id)}</div>`).join('')}</div>`)+panel('Your lifetime by numbers','Your story, your choices',`<div class="v2-grid4">${[['Actions taken',state.lifetimeActions],['Years employed',state.experience],['Total lifetime earnings',cash(state.totalEarned)],['Children',state.children.length],['Businesses built',state.business?1:0],['Net worth',cash(net())],['Credit score',state.credit],['Goals completed',state.completedGoals.length]].map(([a,b])=>`<div class="v2-fact"><small>${a}</small><strong>${b}</strong></div>`).join('')}</div>`)}
-function renderGoalsModal(){popup={type:'options',title:'What do you want from life?',desc:'Choose an aspiration. Achieve it to earn happiness and reputation.',options:goalList.map(g=>({label:`${g.icon} ${g.name} — ${g.desc}`,value:g.id})),onSelect:(id)=>extraAction('goal',id)};showPopup()}
-// Connect every new view to the established original interface and lifecycle.
-const prevRender=render;
-render=function(){if(!state)return;state=normalize(state);prevRender();const area=$('content');
- if(state.gameover){area.insertAdjacentHTML('beforeend',renderJournalExtra())}
- else if(tab==='home'){area.insertAdjacentHTML('afterbegin',renderDashboardExtra());area.insertAdjacentHTML('beforeend',renderHomeExtra())}
- else if(tab==='career')area.insertAdjacentHTML('beforeend',renderCareerExtra());
- else if(tab==='money')area.insertAdjacentHTML('beforeend',renderMoneyExtra());
- else if(tab==='social')area.insertAdjacentHTML('beforeend',renderPeopleExtra());
- else if(tab==='wellness')area.innerHTML=renderWellness();
- else if(tab==='story')area.insertAdjacentHTML('beforeend',renderJournalExtra());
- $('nav').innerHTML=[['home','⌂','Life'],['career','💼','Work'],['money','💳','Money'],['social','💞','People'],['wellness','🩺','Health'],['story','📖','Story']].map(([id,ico,label])=>`<button class="navbutton ${tab===id?'active':''}" data-tab="${id}" type="button"><span class="ico">${ico}</span>${label}</button>`).join('')+`<div class="sidetip"><div class="eyebrow">CHAPTER TWO</div><p>Your neighborhood, finances, skills, family, health and career all change as life goes on.</p></div>`;
- document.querySelectorAll('[data-tab]').forEach(x=>x.onclick=()=>setTab(x.dataset.tab));
- // Old handlers are rebound for fresh Wellness content; existing sections keep theirs.
- document.querySelectorAll('#content [data-action]').forEach(x=>x.onclick=()=>act(x.dataset.action));
- document.querySelectorAll('#content [data-v2]').forEach(x=>x.onclick=()=>{if(x.dataset.v2==='openGoals')return renderGoalsModal();extraAction(x.dataset.v2,x.dataset.arg||'')});
- if(state.house)$('playerdesc').textContent=`📍 ${state.city} · ${state.retired?'Retired':occupation()?.name||'Currently unemployed'} · Homeowner`;
- if(state.retired&&!state.house)$('playerdesc').textContent=`📍 ${state.city} · Retired · ${(dwellings.find(x=>x.id===state.housing)||dwellings[0]).name}`;
- $('avatar').textContent=state.age<4?'👶🏽':state.age<13?'🧒🏽':state.age>=60?(state.avatarStyle&&state.avatarStyle.startsWith('👩')?'👵🏽':'🧓🏽'):(state.avatarStyle||'🧑🏽');
- if(state.yearLedger)$('saved-indicator').title=`Last year: ${cash(state.yearLedger.cashChange)} cash flow`;
- save();};
-const oldAgeUp=ageUp;
-ageUp=function(){if(state.gameover||popup)return;const prevAge=state.age;oldAgeUp();if(state.pet&&state.age>prevAge){state.pet.age++;if(state.pet.age>11&&Math.random()<.08){log(`${state.pet.name} passed away. You will always remember your pet.`,'🐾');state.pet=null;change({happiness:-7});render()}}};
-function slotKey(slot){return `truelife-sim-v2-slot-${slot}`}
-function switchSlot(slot){save();const s=clamp(Number(slot)||1,1,3);STORAGE=slotKey(s);try{localStorage.setItem('truelife-active-slot',String(s))}catch(e){}state=load();tab='home';popup=state?.pendingEvent?{type:'event',eventId:state.pendingEvent}:state?null:{type:'start'};showPopup();if(state)render();}
-function downloadSave(){try{const bytes=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const url=URL.createObjectURL(bytes),a=document.createElement('a');a.href=url;a.download='TRUE_LIFE_'+state.name.replace(/[^a-z0-9]+/gi,'_')+'_age'+state.age+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Your life file is ready.')}catch(e){toast('Could not export save file on this browser.')}}
-function openSaveManager(){const cur=Number(STORAGE.slice(-1))||1;const saves=[1,2,3].map(n=>{let o=null;try{o=JSON.parse(localStorage.getItem(slotKey(n)))}catch(e){}return {n,save:o&&typeof o.name==='string'?o:null}});
- popup={type:'slot'};
- $('modalcontainer').innerHTML=`<div class="overlay"><div class="modal" role="dialog" aria-modal="true" aria-label="Save manager"><div class="eventbadge">SAVE MANAGER</div><h2>Live a thousand lives.</h2><p>Keep up to three different lives on this device. You can also export your character as a JSON backup and import it later.</p>${saves.map(({n,save:s})=>`<button class="choice" data-slot="${n}"><strong>${n===cur?'✓ ':''}Life slot ${n} ${s?'· '+esc(s.name):'· Empty'}</strong><small>${s?`Age ${s.age} · ${esc(s.city||'Unknown city')} · Cash ${cash(s.wealth)}`:'Create a new story'}${n===cur?' · CURRENT SLOT':''}</small></button>`).join('')}<div class="v2-actions" style="margin-top:18px"><button id="exportSave" class="ghost" ${!state?'disabled':''}>⬇ Export life</button><label for="importFile" class="ghost" style="cursor:pointer">⬆ Import life</label><input type="file" id="importFile" accept=".json,application/json" style="display:none" /></div><div class="modalbuttons"><button class="ghost" id="closeSaves">Close</button></div></div></div>`;
- $('closeSaves').onclick=()=>{popup=null;showPopup()};document.querySelectorAll('[data-slot]').forEach(el=>el.onclick=()=>switchSlot(el.dataset.slot));$('exportSave').onclick=()=>downloadSave();$('importFile').onchange=async(e)=>{try{const file=e.target.files?.[0];if(!file||file.size>500000)throw new Error('Choose a save under 500 KB');const t=await file.text(),data=normalize(JSON.parse(t));if(!data)throw new Error('Invalid TRUE LIFE save.');state=data;popup=null;showPopup();tab='home';render();toast('Your character was imported.')}catch(e){toast(e.message||'Import failed.')}}}
-const standardPopup=showPopup;
-showPopup=function(){standardPopup();if(popup&&popup.type==='start'&&$('beginlife')){
- const startBtn=$('beginlife');
- startBtn.insertAdjacentHTML('beforebegin',`<div class="formrow"><label for="avatarstyle">Character portrait</label><select id="avatarstyle"><option value="🧑🏽">🧑🏽 Person</option><option value="👨🏻">👨🏻 Man (light)</option><option value="👨🏽">👨🏽 Man (medium)</option><option value="👨🏿">👨🏿 Man (dark)</option><option value="👩🏻">👩🏻 Woman (light)</option><option value="👩🏽">👩🏽 Woman (medium)</option><option value="👩🏿">👩🏿 Woman (dark)</option></select></div><div class="formrow"><label for="personality">Natural personality</label><select id="personality"><option value="balanced">Balanced — flexible starting strengths</option><option value="ambitious">Ambitious — performance up, more stress</option><option value="curious">Curious — learning and grades up</option><option value="charismatic">Charismatic — friendships and reputation up</option><option value="resilient">Resilient — handles stress better</option><option value="creative">Creative — media business potential up</option></select></div>`);
- const originalStart=startBtn.onclick;
- startBtn.onclick=()=>{const avatar=$('avatarstyle').value,trait=$('personality').value;originalStart();if(!state)return;state.avatarStyle=avatar;state.personality=trait;
- if(trait==='ambitious'){state.careerPerformance=clamp(state.careerPerformance+12);change({stress:5,smarts:3})}
- if(trait==='curious'){change({smarts:10});state.gpa=clamp(state.gpa+.2,0,4)}
- if(trait==='charismatic'){change({social:10,friendScore:9});state.reputation=clamp(state.reputation+8)}
- if(trait==='resilient'){state.mental=clamp(state.mental+12);change({stress:-12,health:5})}
- if(trait==='creative'){state.skillCreative=clamp(state.skillCreative+16);state.skillBusiness=clamp(state.skillBusiness+5)}
- render();};
- }};
-$('manage-life').onclick=()=>openSaveManager();
-try{const s=localStorage.getItem('truelife-active-slot');if(['1','2','3'].includes(s))STORAGE=slotKey(s)}catch(e){}
-
-$('newlife').onclick=()=>state?newGamePrompt():(popup={type:'start'},showPopup());
-state=load();if(!state){popup={type:'start'};showPopup()}else{if(state.pendingEvent&&events[state.pendingEvent])popup={type:'event',eventId:state.pendingEvent};render();if(popup)showPopup()}
-})();
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#182623" />
+    <meta
+      name="description"
+      content="Make a home, earn your way, and explore Eastbrook in TRUE LIFE, a playable third-person life simulator."
+    />
+    <title>TRUE LIFE — Your next chapter</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23182623'/%3E%3Cpath d='M15 21h34v7H36v23h-8V28H15z' fill='%23e6c48a'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="game" aria-label="TRUE LIFE 3D neighborhood"></div>
+    <div id="loading">
+      <div class="wordmark">
+        TRUE<span>LIFE</span><small>YOUR NEXT CHAPTER</small>
+      </div>
+      <div class="loading-line"></div>
+      <p>Opening Eastbrook…</p>
+    </div>
+    <div id="hud" hidden>
+      <header class="topbar">
+        <div class="brand">
+          TRUE<span>LIFE</span><small>OPEN WORLD · CHAPTER 01</small>
+        </div>
+        <div class="world-info">
+          <span id="clock">MON 08:00</span
+          ><span id="weather-label">Clear skies</span>
+        </div>
+        <button id="pause" class="icon-button" aria-label="Pause and settings">
+          Ⅱ
+        </button>
+      </header>
+      <section class="status">
+        <div class="balance">
+          <small>ON HAND</small><strong id="cash">$480</strong>
+        </div>
+        <div class="needs">
+          <label
+            >Hunger
+            <meter id="hunger" min="0" max="100" value="80"></meter></label
+          ><label
+            >Energy
+            <meter id="energy" min="0" max="100" value="85"></meter></label
+          ><label
+            >Health <meter id="health" min="0" max="100" value="100"></meter
+          ></label>
+        </div>
+      </section>
+      <aside class="journal">
+        <small>YOUR NEXT STEP</small>
+        <h2 id="objective-title">A place to call home</h2>
+        <p id="objective-text">Visit your apartment on Magnolia Street.</p>
+        <button id="navigate">Show the way <span>↗</span></button>
+      </aside>
+      <div id="waypoint" hidden></div>
+      <div id="toast" role="status" aria-live="polite"></div>
+      <section class="map-wrap">
+        <button id="map-button" aria-label="Open map and destinations">
+          <canvas id="minimap" width="300" height="240"></canvas
+          ><span class="map-label"
+            ><i></i><span id="location">EASTBROOK</span><b>↗</b></span
+          >
+        </button>
+        <div id="save-label">LOCAL SAVE · READY</div>
+      </section>
+      <div class="context">
+        <span id="context-text"></span
+        ><button id="interact">
+          <kbd>E</kbd><span id="interact-label">Interact</span>
+        </button>
+      </div>
+      <div class="desktop-help">
+        <span><kbd>WASD</kbd> Move</span><span><kbd>Drag</kbd> Camera</span
+        ><span><kbd>Space</kbd> Jump</span><span><kbd>Shift</kbd> Run</span
+        ><span><kbd>C</kbd> Crouch</span>
+      </div>
+      <div id="speedometer" hidden>
+        <strong id="speed">0</strong><small>MPH</small>
+        <div id="car-info">Fuel 100% · Condition 100%</div>
+        <button id="lights">Headlights · L</button
+        ><button id="horn">Horn · H</button
+        ><button id="indicator">Turn signal · Q</button>
+      </div>
+      <div id="walk-controls">
+        <div id="joystick" aria-label="Walking joystick">
+          <div id="stick"></div>
+        </div>
+        <div class="actions">
+          <button id="sprint" aria-label="Hold to sprint">RUN</button
+          ><button id="jump" aria-label="Jump">↑</button
+          ><button id="crouch" aria-label="Toggle crouch">LOW</button>
+        </div>
+      </div>
+      <div id="drive-controls" hidden>
+        <div class="steering">
+          <button data-drive="left" aria-label="Steer left">◀</button
+          ><button data-drive="right" aria-label="Steer right">▶</button>
+        </div>
+        <div class="pedals">
+          <button data-drive="brake" aria-label="Brake or reverse">BRAKE</button
+          ><button data-drive="gas" aria-label="Accelerate">GAS</button>
+        </div>
+      </div>
+    </div>
+    <div id="modal-layer">
+      <section id="welcome" class="sheet welcome">
+        <div class="eyebrow">EASTBROOK, ALABAMA · CHAPTER 01</div>
+        <h1>Your city.<br />Your story.</h1>
+        <p>
+          A small apartment. A fresh start. Build a life one ordinary,
+          extraordinary day at a time.
+        </p>
+        <form id="character-form">
+          <label
+            >Your name<input
+              id="player-name"
+              maxlength="24"
+              value="Alex Morgan"
+              autocomplete="off"
+              required
+          /></label>
+          <div class="form-grid">
+            <label
+              >Presentation<select id="gender">
+                <option value="masculine">Masculine</option>
+                <option value="feminine">Feminine</option>
+              </select></label
+            ><label
+              >Skin tone<select id="skin">
+                <option value="#b67c57">Warm brown</option>
+                <option value="#69432e">Deep brown</option>
+                <option value="#dfab82">Tan</option>
+                <option value="#f0cbb0">Fair</option>
+              </select></label
+            ><label
+              >Hair<select id="hair">
+                <option value="short">Short curls</option>
+                <option value="long">Shoulder length</option>
+                <option value="buzz">Buzz cut</option>
+                <option value="none">Shaved</option>
+              </select></label
+            ><label
+              >Build<select id="build">
+                <option value="regular">Regular</option>
+                <option value="slim">Slim</option>
+                <option value="broad">Broad</option>
+              </select></label
+            ><label
+              >Outfit<select id="outfit">
+                <option value="#536f64">Sage / denim</option>
+                <option value="#b6a18b">Sand / denim</option>
+                <option value="#663e41">Burgundy / denim</option>
+                <option value="#263547">Navy / denim</option>
+              </select></label
+            ><label
+              >Face<select id="face">
+                <option value="soft">Soft</option>
+                <option value="angular">Angular</option>
+              </select></label
+            >
+          </div>
+          <button class="primary" id="start" type="submit">
+            Begin your story <span>→</span>
+          </button>
+        </form>
+        <p class="welcome-foot">
+          Walk, drive, work, make yourself at home.<br /><span
+            >Progress saves on this device.</span
+          >
+        </p>
+        <a class="classic" href="/classic.html"
+          >Play the original TRUE LIFE ↗</a
+        >
+      </section>
+      <section id="pause-sheet" class="sheet" hidden>
+        <div class="eyebrow">TAKE A BREATH</div>
+        <h2>Your story, at your pace.</h2>
+        <p>The world is paused. Progress stays on this browser.</p>
+        <div class="settings">
+          <label
+            >Graphics<select id="quality">
+              <option value="low">Low · mobile</option>
+              <option value="medium" selected>Balanced</option>
+              <option value="high">High</option>
+            </select></label
+          ><label>Sound<button id="sound">Sound off</button></label>
+        </div>
+        <div class="button-row">
+          <button id="save">Save game</button
+          ><button id="export">Export save</button
+          ><label class="file-label"
+            >Import save<input
+              id="import"
+              type="file"
+              accept="application/json"
+          /></label>
+        </div>
+        <button class="primary" id="resume">Back to Eastbrook →</button
+        ><button id="appearance">Change appearance</button
+        ><button id="destinations">Map & destinations</button
+        ><a class="classic" href="/classic.html"
+          >Original TRUE LIFE (separate saves) ↗</a
+        >
+        <p class="controls-note">
+          WASD / arrows: move · Drag: look · Shift: sprint · Space: jump /
+          handbrake · C: crouch · E / F: interact or enter / exit car · L:
+          lights · H: horn · Q: signal · M: map · Esc: pause.
+        </p>
+      </section>
+      <section id="map-sheet" class="sheet" hidden>
+        <div class="eyebrow">FIND YOUR NEXT CHAPTER</div>
+        <h2>Around Eastbrook</h2>
+        <p>Choose a destination to mark it on your map.</p>
+        <div id="destination-list"></div>
+        <button id="close-map" class="primary">Back to the street →</button>
+      </section>
+    </div>
+    <div id="fatal" hidden>
+      <h1>Eastbrook couldn’t open</h1>
+      <p id="fatal-message"></p>
+      <button onclick="location.reload()">Try again</button
+      ><a href="/classic.html">Play Classic TRUE LIFE</a>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
